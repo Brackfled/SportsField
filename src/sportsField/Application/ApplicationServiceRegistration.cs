@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Application.Services.AuthenticatorService;
 using Application.Services.AuthService;
+using Application.Services.CourtImages;
 using Application.Services.UsersService;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,9 @@ using NArchitecture.Core.Mailing;
 using NArchitecture.Core.Mailing.MailKit;
 using NArchitecture.Core.Security.DependencyInjection;
 using NArchitecture.Core.Security.JWT;
+using Application.Services.Attiributes;
+using Application.Services.Courts;
+using Application.Services.CourtReservations;
 
 namespace Application;
 
@@ -57,10 +61,15 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IAuthenticatorService, AuthenticatorManager>();
         services.AddScoped<IUserService, UserManager>();
 
+        services.AddScoped<ICourtImageService, CourtImageManager>();
+
         services.AddYamlResourceLocalization();
 
         services.AddSecurityServices<Guid, int, Guid>(tokenOptions);
 
+        services.AddScoped<IAttiributeService, AttiributeManager>();
+        services.AddScoped<ICourtService, CourtManager>();
+        services.AddScoped<ICourtReservationService, CourtReservationManager>();
         return services;
     }
 

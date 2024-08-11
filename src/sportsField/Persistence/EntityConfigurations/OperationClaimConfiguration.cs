@@ -6,6 +6,9 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NArchitecture.Core.Security.Constants;
+using Application.Features.Attiributes.Constants;
+using Application.Features.Courts.Constants;
+using Application.Features.CourtReservations.Constants;
 
 namespace Persistence.EntityConfigurations;
 
@@ -97,6 +100,48 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
         );
         #endregion
 
+        
+        #region Attiributes CRUD
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = AttiributesOperationClaims.Admin },
+                new() { Id = ++lastId, Name = AttiributesOperationClaims.Read },
+                new() { Id = ++lastId, Name = AttiributesOperationClaims.Write },
+                new() { Id = ++lastId, Name = AttiributesOperationClaims.Create },
+                new() { Id = ++lastId, Name = AttiributesOperationClaims.Update },
+                new() { Id = ++lastId, Name = AttiributesOperationClaims.Delete },
+            ]
+        );
+        #endregion
+        
+        
+        #region Courts CRUD
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = CourtsOperationClaims.Admin },
+                new() { Id = ++lastId, Name = CourtsOperationClaims.Read },
+                new() { Id = ++lastId, Name = CourtsOperationClaims.Write },
+                new() { Id = ++lastId, Name = CourtsOperationClaims.Create },
+                new() { Id = ++lastId, Name = CourtsOperationClaims.Update },
+                new() { Id = ++lastId, Name = CourtsOperationClaims.Delete },
+            ]
+        );
+        #endregion
+        
+        
+        #region CourtReservations CRUD
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Admin },
+                new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Read },
+                new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Write },
+                new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Create },
+                new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Update },
+                new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Delete },
+            ]
+        );
+        #endregion
+        
         return featureOperationClaims;
     }
 #pragma warning restore S1854 // Unused assignments should be removed
