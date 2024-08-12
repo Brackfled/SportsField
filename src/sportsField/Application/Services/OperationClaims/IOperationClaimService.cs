@@ -29,4 +29,5 @@ public interface IOperationClaimService
     Task<OperationClaim> AddAsync(OperationClaim operationClaim);
     Task<OperationClaim> UpdateAsync(OperationClaim operationClaim);
     Task<OperationClaim> DeleteAsync(OperationClaim operationClaim, bool permanent = false);
+    Task<ICollection<OperationClaim>> GetAllAsync();
 }

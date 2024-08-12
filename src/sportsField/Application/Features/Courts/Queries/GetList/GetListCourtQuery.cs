@@ -9,6 +9,7 @@ using NArchitecture.Core.Application.Responses;
 using NArchitecture.Core.Persistence.Paging;
 using MediatR;
 using static Application.Features.Courts.Constants.CourtsOperationClaims;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Courts.Queries.GetList;
 
@@ -37,6 +38,7 @@ public class GetListCourtQuery : IRequest<GetListResponse<GetListCourtListItemDt
         public async Task<GetListResponse<GetListCourtListItemDto>> Handle(GetListCourtQuery request, CancellationToken cancellationToken)
         {
             IPaginate<Court> courts = await _courtRepository.GetListAsync(
+                include: c => c.Include(opt => opt.Attiributes!).Include(opt => opt.CourtImages!),
                 index: request.PageRequest.PageIndex,
                 size: request.PageRequest.PageSize, 
                 cancellationToken: cancellationToken

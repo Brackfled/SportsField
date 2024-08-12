@@ -87,4 +87,10 @@ public class OperationClaimManager : IOperationClaimService
 
         return deletedOperationClaim;
     }
+
+    public async Task<ICollection<OperationClaim>> GetAllAsync()
+    {
+        ICollection<OperationClaim>? operationClaims = await _operationClaimRepository.GetAllAsync();
+        return operationClaims;
+    }
 }

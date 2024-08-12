@@ -60,14 +60,18 @@ public class LoginCommand : IRequest<LoggedResponse>
 
             if (user!.AuthenticatorType is not AuthenticatorType.None)
             {
-                if (request.UserForLoginDto.AuthenticatorCode is null)
+                bool codeIsRequired = await _authenticatorService.UserLoginCodeIsRequired(user!);
+                if (codeIsRequired)
                 {
-                    await _authenticatorService.SendAuthenticatorCode(user);
-                    loggedResponse.RequiredAuthenticatorType = user.AuthenticatorType;
-                    return loggedResponse;
-                }
+                    if (request.UserForLoginDto.AuthenticatorCode is null)
+                    {
+                        await _authenticatorService.SendAuthenticatorCode(user);
+                        loggedResponse.RequiredAuthenticatorType = user.AuthenticatorType;
+                        return loggedResponse;
+                    }
 
-                await _authenticatorService.VerifyAuthenticatorCode(user, request.UserForLoginDto.AuthenticatorCode);
+                    await _authenticatorService.VerifyAuthenticatorCode(user, request.UserForLoginDto.AuthenticatorCode);
+                }
             }
 
             AccessToken createdAccessToken = await _authService.CreateAccessToken(user);

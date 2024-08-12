@@ -9,22 +9,16 @@ using NArchitecture.Core.Application.Pipelines.Transaction;
 using MediatR;
 using Domain.Enums;
 using static Application.Features.Courts.Constants.CourtsOperationClaims;
+using Domain.Dtos;
 
 namespace Application.Features.Courts.Commands.Update;
 
 public class UpdateCourtCommand : IRequest<UpdatedCourtResponse>, ISecuredRequest, ICacheRemoverRequest, ITransactionalRequest
 {
-    public Guid Id { get; set; }
     public required Guid UserId { get; set; }
-    public required string Name { get; set; }
-    public required CourtType CourtType { get; set; }
-    public required string Description { get; set; }
-    public required bool IsActive { get; set; }
-    public required string Lat { get; set; }
-    public required string Lng { get; set; }
-    public required string FormattedAddress { get; set; }
+    public UpdateCourtCommandDto UpdateCourtCommandDto { get; set; }
 
-    public string[] Roles => [Admin, Write, CourtsOperationClaims.Update];
+    public string[] Roles => [Admin, CourtsOperationClaims.Update];
 
     public bool BypassCache { get; }
     public string? CacheKey { get; }
@@ -46,9 +40,10 @@ public class UpdateCourtCommand : IRequest<UpdatedCourtResponse>, ISecuredReques
 
         public async Task<UpdatedCourtResponse> Handle(UpdateCourtCommand request, CancellationToken cancellationToken)
         {
-            Court? court = await _courtRepository.GetAsync(predicate: c => c.Id == request.Id, cancellationToken: cancellationToken);
+            Court? court = await _courtRepository.GetAsync(predicate: c => c.Id == request.UpdateCourtCommandDto.Id, cancellationToken: cancellationToken);
             await _courtBusinessRules.CourtShouldExistWhenSelected(court);
-            court = _mapper.Map(request, court);
+            await _courtBusinessRules.UserIdNotMatchedCourtUserId(court!.Id, request.UserId, Admin);
+            court = _mapper.Map(request.UpdateCourtCommandDto, court);
 
             await _courtRepository.UpdateAsync(court!);
 

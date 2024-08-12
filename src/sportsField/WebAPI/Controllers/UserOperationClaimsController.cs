@@ -1,8 +1,10 @@
 ﻿using Application.Features.UserOperationClaims.Commands.Create;
+using Application.Features.UserOperationClaims.Commands.CreateAccess;
 using Application.Features.UserOperationClaims.Commands.Delete;
 using Application.Features.UserOperationClaims.Commands.Update;
 using Application.Features.UserOperationClaims.Queries.GetById;
 using Application.Features.UserOperationClaims.Queries.GetList;
+using Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using NArchitecture.Core.Application.Requests;
 using NArchitecture.Core.Application.Responses;
@@ -46,6 +48,14 @@ public class UserOperationClaimsController : BaseController
     public async Task<IActionResult> Delete([FromBody] DeleteUserOperationClaimCommand deleteUserOperationClaimCommand)
     {
         DeletedUserOperationClaimResponse result = await Mediator.Send(deleteUserOperationClaimCommand);
+        return Ok(result);
+    }
+
+    [HttpPost("CreateAccess")]
+    public async Task<IActionResult> CreateAccess([FromBody] Guid userId, UserState userState)
+    {
+        CreateAccessCommand command = new() { UserId = userId, UserState = userState};
+        bool result = await Mediator.Send(command);
         return Ok(result);
     }
 }

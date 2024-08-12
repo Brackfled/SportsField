@@ -6,6 +6,7 @@ using Domain.Entities;
 using NArchitecture.Core.Application.Pipelines.Authorization;
 using MediatR;
 using static Application.Features.Courts.Constants.CourtsOperationClaims;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Courts.Queries.GetById;
 
@@ -30,7 +31,10 @@ public class GetByIdCourtQuery : IRequest<GetByIdCourtResponse>, ISecuredRequest
 
         public async Task<GetByIdCourtResponse> Handle(GetByIdCourtQuery request, CancellationToken cancellationToken)
         {
-            Court? court = await _courtRepository.GetAsync(predicate: c => c.Id == request.Id, cancellationToken: cancellationToken);
+            Court? court = await _courtRepository.GetAsync(
+                predicate: c => c.Id == request.Id, 
+                include: c => c.Include(opt => opt.Attiributes!).Include(opt => opt.CourtImages!),
+                cancellationToken: cancellationToken);
             await _courtBusinessRules.CourtShouldExistWhenSelected(court);
 
             GetByIdCourtResponse response = _mapper.Map<GetByIdCourtResponse>(court);

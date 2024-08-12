@@ -6,14 +6,14 @@ public class UpdateCourtCommandValidator : AbstractValidator<UpdateCourtCommand>
 {
     public UpdateCourtCommandValidator()
     {
-        RuleFor(c => c.Id).NotEmpty();
+        RuleFor(c => c.UpdateCourtCommandDto.Id).NotEmpty();
         RuleFor(c => c.UserId).NotEmpty();
-        RuleFor(c => c.Name).NotEmpty();
-        RuleFor(c => c.CourtType).NotEmpty();
-        RuleFor(c => c.Description).NotEmpty();
-        RuleFor(c => c.IsActive).NotEmpty();
-        RuleFor(c => c.Lat).NotEmpty();
-        RuleFor(c => c.Lng).NotEmpty();
-        RuleFor(c => c.FormattedAddress).NotEmpty();
+        RuleFor(c => c.UpdateCourtCommandDto.Name).NotEmpty();
+        RuleFor(c => c.UpdateCourtCommandDto.CourtType).NotEmpty();
+        RuleFor(c => c.UpdateCourtCommandDto.Description).NotEmpty();
+        RuleFor(c => c.UpdateCourtCommandDto.IsActive).NotEmpty();
+        RuleFor(c => c.UpdateCourtCommandDto.Lat).NotEmpty();
+        RuleFor(c => c.UpdateCourtCommandDto.Lng).NotEmpty();
+        RuleFor(c => c.UpdateCourtCommandDto.FormattedAddress).NotEmpty();
     }
 }

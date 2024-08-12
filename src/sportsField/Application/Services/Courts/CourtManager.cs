@@ -74,4 +74,10 @@ public class CourtManager : ICourtService
 
         return deletedCourt;
     }
+
+    public async Task<ICollection<Court>> GetAllAsync(Expression<Func<Court, bool>>? predicate = null)
+    {
+        ICollection<Court>? courts = await _courtRepository.GetAllAsync(predicate);
+        return courts;
+    }
 }

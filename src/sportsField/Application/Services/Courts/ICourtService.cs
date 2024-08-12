@@ -27,4 +27,5 @@ public interface ICourtService
     Task<Court> AddAsync(Court court);
     Task<Court> UpdateAsync(Court court);
     Task<Court> DeleteAsync(Court court, bool permanent = false);
+    Task<ICollection<Court>> GetAllAsync(Expression<Func<Court, bool>>? predicate = null);
 }

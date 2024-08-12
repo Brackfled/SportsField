@@ -1,5 +1,6 @@
 using NArchitecture.Core.Application.Dtos;
 using Domain.Enums;
+using Domain.Entities;
 
 namespace Application.Features.Courts.Queries.GetList;
 
@@ -14,4 +15,6 @@ public class GetListCourtListItemDto : IDto
     public string Lat { get; set; }
     public string Lng { get; set; }
     public string FormattedAddress { get; set; }
+    public ICollection<Attiribute>? Attiributes { get; set; } = default!;
+    public ICollection<CourtImage>? CourtImages { get; set; } = default!;
 }

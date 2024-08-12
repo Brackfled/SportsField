@@ -39,4 +39,28 @@ public class CourtReservationBusinessRules : BaseBusinessRules
         );
         await CourtReservationShouldExistWhenSelected(courtReservation);
     }
+
+    public async Task CourtReservationDateShouldBeMatchedDateNow(DateTime dateTime)
+    {
+        int requiredWeekNumber = GetDateTimesWeek(dateTime);
+        int nowWeekNumber = GetDateTimesWeek(DateTime.UtcNow);
+
+        if (requiredWeekNumber != nowWeekNumber)
+            throw new BusinessException(CourtReservationsBusinessMessages.WeekNumberNotMatched);
+    }
+
+    private int GetDateTimesWeek(DateTime dateTime)
+    {
+        DayOfWeek firstDayOfMonth = new DateTime(dateTime.Year, dateTime.Month,1).DayOfWeek;
+
+        int offset = firstDayOfMonth == DayOfWeek.Monday ? 1 : 0;
+        int weekNumber = (dateTime.Day + (int)firstDayOfMonth - 1) / 7 + 1;
+        return weekNumber;
+    }
+
+    public async Task CourtReservationShouldBeActiveAndNotRented(CourtReservation courtReservation)
+    {
+        if (courtReservation.IsActive == false || courtReservation.UserId != null)
+            throw new BusinessException(CourtReservationsBusinessMessages.CannotRented);
+    }
 }

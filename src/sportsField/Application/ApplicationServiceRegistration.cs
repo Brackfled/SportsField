@@ -24,6 +24,9 @@ using NArchitecture.Core.Security.JWT;
 using Application.Services.Attiributes;
 using Application.Services.Courts;
 using Application.Services.CourtReservations;
+using Application.Services.Stroage;
+using Application.Services.UserOperationClaims;
+using Application.Services.OperationClaims;
 
 namespace Application;
 
@@ -60,6 +63,8 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IAuthService, AuthManager>();
         services.AddScoped<IAuthenticatorService, AuthenticatorManager>();
         services.AddScoped<IUserService, UserManager>();
+        services.AddScoped<IUserOperationClaimService, UserUserOperationClaimManager>();
+        services.AddScoped<IOperationClaimService, OperationClaimManager>();
 
         services.AddScoped<ICourtImageService, CourtImageManager>();
 

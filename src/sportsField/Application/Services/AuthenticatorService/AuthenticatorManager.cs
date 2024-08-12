@@ -1,5 +1,7 @@
 ﻿using Application.Services.Repositories;
+using Domain.Dtos;
 using Domain.Entities;
+using Microsoft.Extensions.Configuration;
 using MimeKit;
 using NArchitecture.Core.CrossCuttingConcerns.Exception.Types;
 using NArchitecture.Core.Mailing;
@@ -16,13 +18,15 @@ public class AuthenticatorManager : IAuthenticatorService
     private readonly IMailService _mailService;
     private readonly IOtpAuthenticatorHelper _otpAuthenticatorHelper;
     private readonly IOtpAuthenticatorRepository _otpAuthenticatorRepository;
+    private readonly TimeSettings _timeSettings;
 
     public AuthenticatorManager(
         IEmailAuthenticatorHelper emailAuthenticatorHelper,
         IEmailAuthenticatorRepository emailAuthenticatorRepository,
         IMailService mailService,
         IOtpAuthenticatorHelper otpAuthenticatorHelper,
-        IOtpAuthenticatorRepository otpAuthenticatorRepository
+        IOtpAuthenticatorRepository otpAuthenticatorRepository,
+        IConfiguration configuration
     )
     {
         _emailAuthenticatorHelper = emailAuthenticatorHelper;
@@ -30,6 +34,7 @@ public class AuthenticatorManager : IAuthenticatorService
         _mailService = mailService;
         _otpAuthenticatorHelper = otpAuthenticatorHelper;
         _otpAuthenticatorRepository = otpAuthenticatorRepository;
+        _timeSettings = configuration.GetSection("TimeSettings").Get<TimeSettings>() ?? throw new InvalidOperationException("Options not found!");
     }
 
     public async Task<EmailAuthenticator> CreateEmailAuthenticator(User user)
@@ -74,6 +79,15 @@ public class AuthenticatorManager : IAuthenticatorService
             await VerifyAuthenticatorCodeWithEmail(user, authenticatorCode);
         else if (user.AuthenticatorType is AuthenticatorType.Otp)
             await VerifyAuthenticatorCodeWithOtp(user, authenticatorCode);
+    }
+
+    public async Task<bool> UserLoginCodeIsRequired(User user)
+    {
+        EmailAuthenticator? emailAuthenticator = await _emailAuthenticatorRepository.GetAsync(ea => ea.UserId == user.Id);
+        DateTime now = DateTime.UtcNow;
+        if ((now - emailAuthenticator!.UpdatedDate) > TimeSpan.FromMinutes(_timeSettings.LastLoginTTL))
+            return true;
+        return false;
     }
 
     private async Task SendAuthenticatorCodeWithEmail(User user)

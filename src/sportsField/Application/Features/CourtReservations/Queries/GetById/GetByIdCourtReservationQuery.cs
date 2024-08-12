@@ -9,7 +9,7 @@ using static Application.Features.CourtReservations.Constants.CourtReservationsO
 
 namespace Application.Features.CourtReservations.Queries.GetById;
 
-public class GetByIdCourtReservationQuery : IRequest<GetByIdCourtReservationResponse>, ISecuredRequest
+public class GetByIdCourtReservationQuery : IRequest<GetByIdCourtReservationResponse>//, ISecuredRequest
 {
     public Guid Id { get; set; }
 

@@ -6,6 +6,7 @@ using Application.Features.Auth.Commands.Register;
 using Application.Features.Auth.Commands.RevokeToken;
 using Application.Features.Auth.Commands.VerifyEmailAuthenticator;
 using Application.Features.Auth.Commands.VerifyOtpAuthenticator;
+using Domain.Dtos;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -40,9 +41,9 @@ public class AuthController : BaseController
     }
 
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
+    public async Task<IActionResult> Register([FromBody] RegisterCommandDto registerCommandDto)
     {
-        RegisterCommand registerCommand = new() { UserForRegisterDto = userForRegisterDto, IpAddress = getIpAddress() };
+        RegisterCommand registerCommand = new() { RegisterCommandDto = registerCommandDto, IpAddress = getIpAddress() };
         RegisteredResponse result = await Mediator.Send(registerCommand);
         setRefreshTokenToCookie(result.RefreshToken);
         return Created(uri: "", result.AccessToken);

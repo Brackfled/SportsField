@@ -14,9 +14,10 @@ namespace Application.Features.Courts.Commands.Delete;
 
 public class DeleteCourtCommand : IRequest<DeletedCourtResponse>, ISecuredRequest, ICacheRemoverRequest, ITransactionalRequest
 {
+    public Guid UserId { get; set; }
     public Guid Id { get; set; }
 
-    public string[] Roles => [Admin, Write, CourtsOperationClaims.Delete];
+    public string[] Roles => [Admin, CourtsOperationClaims.Delete];
 
     public bool BypassCache { get; }
     public string? CacheKey { get; }
@@ -40,6 +41,8 @@ public class DeleteCourtCommand : IRequest<DeletedCourtResponse>, ISecuredReques
         {
             Court? court = await _courtRepository.GetAsync(predicate: c => c.Id == request.Id, cancellationToken: cancellationToken);
             await _courtBusinessRules.CourtShouldExistWhenSelected(court);
+
+            await _courtBusinessRules.UserIdNotMatchedCourtUserId(court!.Id, request.Id, Admin);
 
             await _courtRepository.DeleteAsync(court!);
 

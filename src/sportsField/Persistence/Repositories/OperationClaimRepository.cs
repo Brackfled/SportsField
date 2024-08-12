@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using NArchitecture.Core.Persistence.Repositories;
 using Persistence.Contexts;
 
@@ -9,4 +10,13 @@ public class OperationClaimRepository : EfRepositoryBase<OperationClaim, int, Ba
 {
     public OperationClaimRepository(BaseDbContext context)
         : base(context) { }
+
+    public async Task<ICollection<OperationClaim>> GetAllAsync()
+    {
+        ICollection<OperationClaim>? operationClaims = await Query()
+            .AsNoTracking()
+            .ToListAsync();
+
+        return operationClaims;
+    }
 }

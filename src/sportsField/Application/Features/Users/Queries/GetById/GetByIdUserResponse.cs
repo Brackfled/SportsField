@@ -1,3 +1,4 @@
+using Domain.Enums;
 using NArchitecture.Core.Application.Responses;
 
 namespace Application.Features.Users.Queries.GetById;
@@ -9,6 +10,7 @@ public class GetByIdUserResponse : IResponse
     public string LastName { get; set; }
     public string Email { get; set; }
     public bool Status { get; set; }
+    public UserState UserState { get; set; }
 
     public GetByIdUserResponse()
     {
@@ -17,12 +19,13 @@ public class GetByIdUserResponse : IResponse
         Email = string.Empty;
     }
 
-    public GetByIdUserResponse(Guid id, string firstName, string lastName, string email, bool status)
+    public GetByIdUserResponse(Guid ýd, string firstName, string lastName, string email, bool status, UserState userState)
     {
-        Id = id;
+        Id = ýd;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         Status = status;
+        UserState = userState;
     }
 }

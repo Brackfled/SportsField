@@ -7,6 +7,8 @@ using AutoMapper;
 using NArchitecture.Core.Application.Responses;
 using Domain.Entities;
 using NArchitecture.Core.Persistence.Paging;
+using Application.Features.Courts.Commands.UpdateActivity;
+using Application.Features.Courts.Queries.GetListByUserId;
 
 namespace Application.Features.Courts.Profiles;
 
@@ -23,9 +25,23 @@ public class MappingProfiles : Profile
         CreateMap<DeleteCourtCommand, Court>();
         CreateMap<Court, DeletedCourtResponse>();
 
-        CreateMap<Court, GetByIdCourtResponse>();
+        CreateMap<Court, GetByIdCourtResponse>()
+            .ForMember(c => c.Attiributes, memberOptions: opt => opt.MapFrom(c => c.Attiributes))
+            .ForMember(c => c.CourtImages, memberOptions: opt => opt.MapFrom(c => c.CourtImages))
+            ;
 
-        CreateMap<Court, GetListCourtListItemDto>();
+        CreateMap<Court, GetListCourtListItemDto>()
+            .ForMember(c => c.Attiributes, memberOptions: opt => opt.MapFrom(c => c.Attiributes))
+            .ForMember(c => c.CourtImages, memberOptions: opt => opt.MapFrom(c => c.CourtImages))
+            ;
         CreateMap<IPaginate<Court>, GetListResponse<GetListCourtListItemDto>>();
+
+        CreateMap<Court, UpdatedActivityCourtResponse>();
+
+        CreateMap<Court, GetListByUserIdCourtListItemDto>()
+            .ForMember(c => c.Attiributes, memberOptions: opt => opt.MapFrom(c => c.Attiributes))
+            .ForMember(c => c.CourtImages, memberOptions: opt => opt.MapFrom(c => c.CourtImages))
+            ;
+        CreateMap<IPaginate<Court>, GetListResponse<GetListByUserIdCourtListItemDto>>();
     }
 }
