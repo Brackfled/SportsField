@@ -42,9 +42,9 @@ public class DeleteCourtCommand : IRequest<DeletedCourtResponse>, ISecuredReques
             Court? court = await _courtRepository.GetAsync(predicate: c => c.Id == request.Id, cancellationToken: cancellationToken);
             await _courtBusinessRules.CourtShouldExistWhenSelected(court);
 
-            await _courtBusinessRules.UserIdNotMatchedCourtUserId(court!.Id, request.Id, Admin);
+            await _courtBusinessRules.UserIdNotMatchedCourtUserId(court!.Id, request.UserId, Admin);
 
-            await _courtRepository.DeleteAsync(court!);
+            await _courtRepository.DeleteAsync(court!, true);
 
             DeletedCourtResponse response = _mapper.Map<DeletedCourtResponse>(court);
             return response;

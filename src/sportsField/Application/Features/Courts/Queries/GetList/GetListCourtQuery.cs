@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Courts.Queries.GetList;
 
-public class GetListCourtQuery : IRequest<GetListResponse<GetListCourtListItemDto>>, ISecuredRequest, ICachableRequest
+public class GetListCourtQuery : IRequest<GetListResponse<GetListCourtListItemDto>>, ICachableRequest//, ISecuredRequest
 {
     public PageRequest PageRequest { get; set; }
 

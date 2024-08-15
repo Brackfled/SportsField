@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Courts.Queries.GetById;
 
-public class GetByIdCourtQuery : IRequest<GetByIdCourtResponse>, ISecuredRequest
+public class GetByIdCourtQuery : IRequest<GetByIdCourtResponse>//, ISecuredRequest
 {
     public Guid Id { get; set; }
 

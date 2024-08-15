@@ -51,7 +51,7 @@ public class CourtBusinessRules : BaseBusinessRules
 
     public async Task UserIdNotMatchedCourtUserId(Guid courtId, Guid userId, string operationClaimName)
     {
-        Court? court = await _courtRepository.GetAsync(c => c.UserId == userId);
+        Court? court = await _courtRepository.GetAsync(c => c.Id == courtId);
         await CourtShouldExistWhenSelected(court);
 
         OperationClaim? operationClaim = await _operationClaimService.GetAsync(oc => oc.Name == operationClaimName);

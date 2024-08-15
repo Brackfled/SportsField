@@ -9,6 +9,7 @@ using Domain.Entities;
 using NArchitecture.Core.Persistence.Paging;
 using Application.Features.Courts.Commands.UpdateActivity;
 using Application.Features.Courts.Queries.GetListByUserId;
+using Domain.Dtos;
 
 namespace Application.Features.Courts.Profiles;
 
@@ -19,7 +20,7 @@ public class MappingProfiles : Profile
         CreateMap<CreateCourtCommand, Court>();
         CreateMap<Court, CreatedCourtResponse>();
 
-        CreateMap<UpdateCourtCommand, Court>();
+        CreateMap<UpdateCourtCommandDto, Court>();
         CreateMap<Court, UpdatedCourtResponse>();
 
         CreateMap<DeleteCourtCommand, Court>();
