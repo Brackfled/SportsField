@@ -40,7 +40,7 @@ public class CourtReservationsController : BaseController
     [HttpDelete("{id}")]
     public async Task<ActionResult<DeletedCourtReservationResponse>> Delete([FromRoute] Guid id)
     {
-        DeleteCourtReservationCommand command = new() { Id = id };
+        DeleteCourtReservationCommand command = new() { Id = id , UserId = getUserIdFromRequest()};
 
         DeletedCourtReservationResponse response = await Mediator.Send(command);
 

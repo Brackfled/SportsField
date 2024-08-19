@@ -23,7 +23,7 @@ public class CourtReservationConfiguration : IEntityTypeConfiguration<CourtReser
         builder.Property(cr => cr.DeletedDate).HasColumnName("DeletedDate");
 
         builder.HasOne(cr => cr.Court).WithMany(cr => cr.CourtReservations).HasForeignKey(cr => cr.CourtId).OnDelete(DeleteBehavior.Restrict);
-        builder.HasOne(cr => cr.User).WithMany(cr => cr.CourtReservations).HasForeignKey(cr => cr.CourtId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(cr => cr.User).WithMany(cr => cr.CourtReservations).HasForeignKey(cr => cr.UserId).OnDelete(DeleteBehavior.Restrict);
 
         builder.HasQueryFilter(cr => !cr.DeletedDate.HasValue);
     }

@@ -263,6 +263,7 @@ namespace Persistence.Migrations
                     FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileType = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     CourtId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsMainImage = table.Column<bool>(type: "bit", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -329,12 +330,12 @@ namespace Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AuthenticatorType", "CreatedDate", "DeletedDate", "Email", "FirstName", "LastName", "PasswordHash", "PasswordSalt", "UpdatedDate", "UserState" },
-                values: new object[] { new Guid("fa8d94b1-8d86-4746-ae9e-99a0c0d9e3c0"), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "oncellhsyn@outlook.com", "Hüseyin", "ÖNCEL", new byte[] { 96, 43, 43, 130, 68, 139, 160, 133, 204, 252, 197, 155, 135, 81, 188, 34, 178, 51, 158, 52, 172, 159, 224, 178, 177, 75, 138, 180, 19, 234, 29, 41, 127, 106, 197, 59, 128, 134, 149, 237, 116, 87, 157, 204, 227, 48, 55, 24, 176, 48, 182, 149, 75, 14, 24, 25, 170, 246, 22, 67, 3, 252, 48, 244 }, new byte[] { 123, 171, 226, 145, 55, 253, 235, 136, 162, 46, 76, 82, 227, 67, 199, 8, 234, 230, 45, 213, 215, 150, 6, 92, 62, 25, 165, 12, 9, 140, 154, 175, 82, 81, 169, 206, 74, 147, 81, 188, 143, 138, 229, 60, 37, 81, 95, 165, 172, 252, 71, 63, 158, 33, 138, 36, 216, 60, 201, 144, 241, 105, 122, 160, 163, 136, 40, 108, 208, 202, 52, 30, 119, 129, 207, 61, 90, 23, 160, 241, 248, 173, 141, 156, 22, 213, 90, 209, 76, 174, 146, 61, 7, 44, 124, 15, 177, 32, 183, 162, 243, 239, 116, 40, 186, 45, 24, 54, 251, 28, 166, 95, 162, 25, 98, 196, 253, 196, 219, 174, 94, 65, 29, 59, 242, 110, 156, 120 }, null, 2 });
+                values: new object[] { new Guid("96c7fe8d-156b-4f0a-a72d-4960dc7843b1"), 0, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "oncellhsyn@outlook.com", "Hüseyin", "ÖNCEL", new byte[] { 35, 185, 39, 250, 158, 125, 176, 2, 165, 185, 252, 117, 244, 199, 240, 33, 125, 158, 128, 49, 218, 12, 109, 87, 226, 67, 43, 220, 14, 211, 154, 111, 199, 200, 99, 188, 18, 209, 28, 120, 149, 140, 223, 45, 74, 66, 246, 26, 93, 200, 111, 188, 198, 198, 31, 52, 0, 204, 76, 3, 167, 168, 212, 194 }, new byte[] { 28, 54, 42, 169, 169, 13, 107, 20, 102, 20, 108, 99, 174, 233, 108, 38, 109, 30, 28, 56, 103, 149, 224, 108, 6, 228, 130, 163, 184, 163, 177, 106, 89, 111, 223, 198, 150, 99, 194, 181, 210, 102, 227, 248, 118, 154, 157, 138, 199, 232, 117, 21, 101, 176, 218, 171, 9, 161, 112, 202, 154, 119, 144, 22, 95, 73, 125, 78, 211, 17, 88, 76, 48, 250, 197, 15, 4, 83, 155, 78, 232, 194, 36, 20, 245, 137, 34, 91, 241, 69, 180, 252, 87, 240, 100, 100, 114, 214, 158, 171, 182, 36, 103, 63, 225, 155, 120, 113, 254, 116, 51, 237, 27, 102, 207, 248, 153, 160, 153, 89, 206, 108, 53, 55, 1, 236, 59, 203 }, null, 2 });
 
             migrationBuilder.InsertData(
                 table: "UserOperationClaims",
                 columns: new[] { "Id", "CreatedDate", "DeletedDate", "OperationClaimId", "UpdatedDate", "UserId" },
-                values: new object[] { new Guid("77dc5597-ecf1-4b35-836c-32c27abc7cf5"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1, null, new Guid("fa8d94b1-8d86-4746-ae9e-99a0c0d9e3c0") });
+                values: new object[] { new Guid("894bd71a-af20-41f8-94aa-34119d9c4e3f"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 1, null, new Guid("96c7fe8d-156b-4f0a-a72d-4960dc7843b1") });
 
             migrationBuilder.CreateIndex(
                 name: "UK_Attiribute_Name",

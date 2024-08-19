@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Application.Features.CourtReservations.Commands.QuickCreate;
 public class QuickCreatedCourtReservationResponse
 {
+    public Guid Id { get; set; }
     public Guid CourtId { get; set; }
     public Guid? UserId { get; set; }
     public DateTime AvailableDate { get; set; }

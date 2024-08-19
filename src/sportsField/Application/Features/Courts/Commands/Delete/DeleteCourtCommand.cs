@@ -28,13 +28,14 @@ public class DeleteCourtCommand : IRequest<DeletedCourtResponse>, ISecuredReques
         private readonly IMapper _mapper;
         private readonly ICourtRepository _courtRepository;
         private readonly CourtBusinessRules _courtBusinessRules;
+        private readonly ICourtReservationRepository _courtReservationRepository;
 
-        public DeleteCourtCommandHandler(IMapper mapper, ICourtRepository courtRepository,
-                                         CourtBusinessRules courtBusinessRules)
+        public DeleteCourtCommandHandler(IMapper mapper, ICourtRepository courtRepository, CourtBusinessRules courtBusinessRules, ICourtReservationRepository courtReservationRepository)
         {
             _mapper = mapper;
             _courtRepository = courtRepository;
             _courtBusinessRules = courtBusinessRules;
+            _courtReservationRepository = courtReservationRepository;
         }
 
         public async Task<DeletedCourtResponse> Handle(DeleteCourtCommand request, CancellationToken cancellationToken)
@@ -43,6 +44,9 @@ public class DeleteCourtCommand : IRequest<DeletedCourtResponse>, ISecuredReques
             await _courtBusinessRules.CourtShouldExistWhenSelected(court);
 
             await _courtBusinessRules.UserIdNotMatchedCourtUserId(court!.Id, request.UserId, Admin);
+
+            ICollection<CourtReservation>? courtReservations = await _courtReservationRepository.GetAllAsync(cr => cr.CourtId == court!.Id);
+            await _courtReservationRepository.DeleteRangeAsync(courtReservations, true);
 
             await _courtRepository.DeleteAsync(court!, true);
 

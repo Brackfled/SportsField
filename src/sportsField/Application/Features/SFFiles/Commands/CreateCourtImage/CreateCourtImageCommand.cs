@@ -61,6 +61,8 @@ public class CreateCourtImageCommand: IRequest<CreatedCourtImageResponse>, ITran
 
             ICollection<CourtImage> courtImageList = new List<CourtImage>();
 
+            int counter = 1; 
+
             foreach (IFormFile item in request.FormFiles)
             {
                 await _sFFileBusinessRules.FileSizeIsCorrect(item, 700, 700);
@@ -73,7 +75,10 @@ public class CreateCourtImageCommand: IRequest<CreatedCourtImageResponse>, ITran
                     FileName = fileOptions.FileName,
                     FilePath = fileOptions.BucketName,
                     FileUrl = fileOptions.FileUrl,
+                    IsMainImage = counter == 1 ? true : false,
                 });
+
+                counter++;
 
                 courtImageList.Add(courtImage);
             }
