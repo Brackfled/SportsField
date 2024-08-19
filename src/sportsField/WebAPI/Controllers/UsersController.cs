@@ -1,4 +1,5 @@
-﻿using Application.Features.Users.Commands.Create;
+﻿using Application.Features.Users.Commands.ContactMail;
+using Application.Features.Users.Commands.Create;
 using Application.Features.Users.Commands.Delete;
 using Application.Features.Users.Commands.Update;
 using Application.Features.Users.Commands.UpdateFromAuth;
@@ -64,5 +65,12 @@ public class UsersController : BaseController
     {
         DeletedUserResponse result = await Mediator.Send(deleteUserCommand);
         return Ok(result);
+    }
+
+    [HttpPost("ContactEmail")]
+    public async Task<IActionResult> ContactMail([FromBody] ContactMailCommand command)
+    {
+        bool response = await Mediator.Send(command);
+        return Ok(response);
     }
 }

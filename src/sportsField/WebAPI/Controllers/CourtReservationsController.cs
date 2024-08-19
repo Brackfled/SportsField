@@ -13,6 +13,7 @@ using Application.Features.CourtReservations.Queries.GetListById;
 using Domain.Entities;
 using Application.Features.CourtReservations.Commands.RentReservation;
 using Application.Features.CourtReservations.Queries.GetListByUserId;
+using Application.Features.CourtReservations.Commands.CancelReservation;
 
 namespace WebAPI.Controllers;
 
@@ -104,6 +105,14 @@ public class CourtReservationsController : BaseController
     {
         GetListByUserIdCourtReservationQuery command = new() { PageRequest = pageRequest , UserId = getUserIdFromRequest()};
         GetListResponse<GetListByUserIdCourtReservationListItemDto> response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPut("CancelReservation")]
+    public async Task<IActionResult> CancelReservation([FromBody] Guid courtId)
+    {
+        CancelReservationCommand command = new() {Id= courtId, UserId = getUserIdFromRequest()};
+        CancelledReservationResponse response = await Mediator.Send(command);
         return Ok(response);
     }
 }

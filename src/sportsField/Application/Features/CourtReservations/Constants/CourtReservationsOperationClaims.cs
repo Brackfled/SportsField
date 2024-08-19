@@ -13,4 +13,5 @@ public static class CourtReservationsOperationClaims
     public const string Update = $"{_section}.Update";
     public const string Delete = $"{_section}.Delete";
     public const string Rent = $"{_section}.Rent";
+    public const string Cancel = $"{_section}.Cancel";
 }

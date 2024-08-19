@@ -28,7 +28,7 @@ public class UpdateActivityCourtReservationCommand: IRequest<UpdatedActivityCour
 
     public string? CacheKey => "";
 
-    public string[]? CacheGroupKey => ["GetCourtReservation"];
+    public string[]? CacheGroupKey => ["GetCourtReservations"];
 
     public class UpdateActivityCourtReservationCommandHandler: IRequestHandler<UpdateActivityCourtReservationCommand, UpdatedActivityCourtReservationResponse>
     {

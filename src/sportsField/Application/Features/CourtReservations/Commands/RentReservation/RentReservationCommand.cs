@@ -28,7 +28,7 @@ public class RentReservationCommand: IRequest<RentReservationResponse>, ITransac
 
     public string? CacheKey => "";
 
-    public string[]? CacheGroupKey => ["GetCourtReservation"];
+    public string[]? CacheGroupKey => ["GetCourtReservations"];
 
     public class RentReservationCommandHandler: IRequestHandler<RentReservationCommand, RentReservationResponse>
     {
