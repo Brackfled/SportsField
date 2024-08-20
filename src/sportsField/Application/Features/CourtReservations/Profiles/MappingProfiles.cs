@@ -12,6 +12,7 @@ using Application.Features.CourtReservations.Commands.UpdateActivity;
 using Application.Features.CourtReservations.Commands.RentReservation;
 using Application.Features.CourtReservations.Queries.GetListByUserId;
 using Application.Features.CourtReservations.Commands.CancelReservation;
+using Application.Features.CourtReservations.Queries.GetListByDynamic;
 
 namespace Application.Features.CourtReservations.Profiles;
 
@@ -49,5 +50,8 @@ public class MappingProfiles : Profile
         CreateMap<IPaginate<CourtReservation>, GetListResponse<GetListByUserIdCourtReservationListItemDto>>();
 
         CreateMap<CourtReservation, CancelledReservationResponse>();
+
+        CreateMap<CourtReservation, GetListByDynamicCourtReservationListItemDto>();
+        CreateMap<IPaginate<CourtReservation>, GetListResponse<GetListByDynamicCourtReservationListItemDto>>();
     }
 }

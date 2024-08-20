@@ -10,6 +10,7 @@ using NArchitecture.Core.Persistence.Paging;
 using Application.Features.Courts.Commands.UpdateActivity;
 using Application.Features.Courts.Queries.GetListByUserId;
 using Domain.Dtos;
+using Application.Features.Courts.Queries.GetListByDynamic;
 
 namespace Application.Features.Courts.Profiles;
 
@@ -44,5 +45,11 @@ public class MappingProfiles : Profile
             .ForMember(c => c.CourtImages, memberOptions: opt => opt.MapFrom(c => c.CourtImages))
             ;
         CreateMap<IPaginate<Court>, GetListResponse<GetListByUserIdCourtListItemDto>>();
+
+        CreateMap<Court, GetListByDynamicCourtListItemDto>()
+            .ForMember(c => c.Attiributes, memberOptions: opt => opt.MapFrom(c => c.Attiributes))
+            .ForMember(c => c.CourtImages, memberOptions: opt => opt.MapFrom(c => c.CourtImages))
+            ;
+        CreateMap<IPaginate<Court>, GetListResponse<GetListByDynamicCourtListItemDto>>();
     }
 }

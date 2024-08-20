@@ -44,6 +44,8 @@ public class CreateCourtReservationCommand : IRequest<CreatedCourtReservationRes
 
         public async Task<CreatedCourtReservationResponse> Handle(CreateCourtReservationCommand request, CancellationToken cancellationToken)
         {
+            (IList<string> saveTimes, IList<string> unsaveTimes) = await _courtReservationBusinessRules.ReservationsTimeControl(request.CreateCourtReservationCommandDto.ReservationTimes);
+
             IList<Guid> courtIds = new List<Guid>();
 
             foreach (Guid courtId in request.CreateCourtReservationCommandDto.CourtIds)
@@ -56,7 +58,7 @@ public class CreateCourtReservationCommand : IRequest<CreatedCourtReservationRes
                 {
                     await _courtReservationBusinessRules.CourtReservationDateShouldBeMatchedDateNow(dateTime);
 
-                    foreach (string time in request.CreateCourtReservationCommandDto.ReservationTimes)
+                    foreach (string time in saveTimes)
                     {
                         string[] times = time.Split('-');
 
@@ -78,7 +80,7 @@ public class CreateCourtReservationCommand : IRequest<CreatedCourtReservationRes
                 }
             }
 
-            CreatedCourtReservationResponse response = new() { CourtIds = courtIds };
+            CreatedCourtReservationResponse response = new() { CourtIds = courtIds, SavedTimes = saveTimes, UnsavedTimes = unsaveTimes };
             return response;
         }
     }

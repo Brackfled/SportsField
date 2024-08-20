@@ -59,10 +59,17 @@ public class CourtReservationBusinessRules : BaseBusinessRules
 
     private int GetDateTimesWeek(DateTime dateTime)
     {
-        DayOfWeek firstDayOfMonth = new DateTime(dateTime.Year, dateTime.Month,1).DayOfWeek;
+        // Türkiye'de haftanýn Pazartesi gününden baþlamasý ve haftalarýn yýl bazýnda hesaplanmasý için ISO 8601 standardýna uygun þekilde:
+        var culture = new System.Globalization.CultureInfo("tr-TR");
+        var calendar = culture.Calendar;
 
-        int offset = firstDayOfMonth == DayOfWeek.Monday ? 1 : 0;
-        int weekNumber = (dateTime.Day + (int)firstDayOfMonth - 1) / 7 + 1;
+        // Haftanýn Pazartesi günü baþladýðý bir kuralla hesaplama yapmak için:
+        var firstDayOfWeek = DayOfWeek.Monday;
+        var weekRule = System.Globalization.CalendarWeekRule.FirstFourDayWeek; // Haftanýn en az 4 gününü içeren ilk hafta
+
+        // Haftanýn yýl içerisindeki numarasýný elde etmek için:
+        int weekNumber = calendar.GetWeekOfYear(dateTime, weekRule, firstDayOfWeek);
+
         return weekNumber;
     }
 
@@ -81,5 +88,43 @@ public class CourtReservationBusinessRules : BaseBusinessRules
 
         if (courtReservation!.UserId != userId && !userOperationClaims.Contains(operationClaim!))
             throw new BusinessException(CourtReservationsBusinessMessages.ReservationNotCancelled);
+    }
+
+    public async Task<(IList<string> saveTimes, IList<string> unsaveTimes)> ReservationsTimeControl(IList<string> reservationTimes)
+    {
+        IList<string> saveTimes = new List<string>();
+        IList<string> unsaveTimes = new List<string>();
+        IList<(TimeSpan startTime, TimeSpan endTime)> reservationTimesTuple = new List<(TimeSpan startTime, TimeSpan endTime)>();
+
+        foreach (string item in reservationTimes)
+        {
+            string[] times = item.Split("-");
+            TimeSpan startTime = TimeSpan.Parse(times[0]);
+            TimeSpan endTime = TimeSpan.Parse(times[1]);
+
+            if (reservationTimesTuple.Count == 0)
+            {
+                saveTimes.Add(item);
+                continue;
+            }
+
+            bool result = reservationTimesTuple.Any(t =>
+                             (startTime >= t.startTime && startTime < t.endTime) ||
+                             (endTime > t.startTime && endTime <= t.endTime) ||
+                             (startTime <= t.startTime && endTime >= t.endTime)
+                           );
+
+            if (!result)
+            {
+                saveTimes.Add(item);
+                reservationTimesTuple.Add((startTime, endTime));
+            }
+
+            if(result)
+                unsaveTimes.Add(item);
+        }
+
+        return (saveTimes, unsaveTimes);
+
     }
 }

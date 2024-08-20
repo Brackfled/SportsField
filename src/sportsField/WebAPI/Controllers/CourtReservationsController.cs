@@ -14,6 +14,8 @@ using Domain.Entities;
 using Application.Features.CourtReservations.Commands.RentReservation;
 using Application.Features.CourtReservations.Queries.GetListByUserId;
 using Application.Features.CourtReservations.Commands.CancelReservation;
+using NArchitecture.Core.Persistence.Dynamic;
+using Application.Features.CourtReservations.Queries.GetListByDynamic;
 
 namespace WebAPI.Controllers;
 
@@ -111,8 +113,16 @@ public class CourtReservationsController : BaseController
     [HttpPut("CancelReservation")]
     public async Task<IActionResult> CancelReservation([FromBody] Guid courtId)
     {
-        CancelReservationCommand command = new() {Id= courtId, UserId = getUserIdFromRequest()};
+        CancelReservationCommand command = new() { Id = courtId, UserId = getUserIdFromRequest() };
         CancelledReservationResponse response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPost("GetListByDynamic")]
+    public async Task<IActionResult> GetListByDynamicCourtReservation([FromQuery] PageRequest pageRequest, [FromBody] DynamicQuery dynamicQuery)
+    {
+        GetListByDynamicCourtReservationQuery query = new() { PageRequest = pageRequest , DynamicQuery = dynamicQuery };
+        GetListResponse<GetListByDynamicCourtReservationListItemDto> response = await Mediator.Send(query);
         return Ok(response);
     }
 }

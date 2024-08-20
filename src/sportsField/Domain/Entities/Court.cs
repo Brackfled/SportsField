@@ -17,6 +17,7 @@ public class Court: Entity<Guid>
     public string Lat {  get; set; }
     public string Lng { get; set; }
     public string FormattedAddress { get; set; }
+
     
     public virtual User? User { get; set; }
     public ICollection<CourtImage>? CourtImages { get; set; } = default!;

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Dtos;
 using Application.Features.Courts.Queries.GetListByUserId;
 using Application.Features.Courts.Commands.UpdateActivity;
+using NArchitecture.Core.Persistence.Dynamic;
+using Application.Features.Courts.Queries.GetListByDynamic;
 
 namespace WebAPI.Controllers;
 
@@ -77,6 +79,14 @@ public class CourtsController : BaseController
     {
         UpdateActivityCourtCommand command = new() { Id = id, IsActive = isActive, UserId = getUserIdFromRequest()};
         UpdatedActivityCourtResponse response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPost("GetListByDynamic")]
+    public async Task<IActionResult> GetListByDynamicCourt([FromQuery] PageRequest pageRequest, DynamicQuery dynamicQuery)
+    {
+        GetListByDynamicCourtQuery query = new() { DynamicQuery= dynamicQuery , PageRequest = pageRequest};
+        GetListResponse<GetListByDynamicCourtListItemDto> response = await Mediator.Send(query);
         return Ok(response);
     }
 }
