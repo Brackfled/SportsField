@@ -15,6 +15,8 @@ public class GetByIdCourtResponse : IResponse
     public string Lat { get; set; }
     public string Lng { get; set; }
     public string FormattedAddress { get; set; }
+    public int Price { get; set; }
+    public string PhoneNumber { get; set; }
     public ICollection<Attiribute>? Attiributes { get; set; } = default!;
     public ICollection<CourtImage>? CourtImages { get; set; } = default!;
 }

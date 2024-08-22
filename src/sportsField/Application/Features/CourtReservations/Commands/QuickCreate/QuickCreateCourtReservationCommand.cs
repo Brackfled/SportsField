@@ -68,6 +68,7 @@ public class QuickCreateCourtReservationCommand: IRequest<QuickCreatedCourtReser
                 CreatedTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
                 CourtId = court!.Id,
                 IsActive = request.QuickCreateCourtReservationCommandDto.IsActive,
+                Price = request.QuickCreateCourtReservationCommandDto.Price
             };
 
             CourtReservation addedCourtReservation = await _courtReservationRepository.AddAsync(courtReservation);

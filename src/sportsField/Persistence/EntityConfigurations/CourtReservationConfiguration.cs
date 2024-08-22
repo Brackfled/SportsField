@@ -18,6 +18,7 @@ public class CourtReservationConfiguration : IEntityTypeConfiguration<CourtReser
         builder.Property(cr => cr.EndTime).HasColumnName("EndTime").IsRequired();
         builder.Property(cr => cr.CreatedTime).HasColumnName("CreatedTime").IsRequired();
         builder.Property(cr => cr.IsActive).HasColumnName("IsActive").IsRequired();
+        builder.Property(cr => cr.Price).HasColumnName("Price").IsRequired();
         builder.Property(cr => cr.CreatedDate).HasColumnName("CreatedDate").IsRequired();
         builder.Property(cr => cr.UpdatedDate).HasColumnName("UpdatedDate");
         builder.Property(cr => cr.DeletedDate).HasColumnName("DeletedDate");

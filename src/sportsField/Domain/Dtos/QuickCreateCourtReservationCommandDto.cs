@@ -11,4 +11,5 @@ public class QuickCreateCourtReservationCommandDto
     public DateTime AvailableDate { get; set; }
     public string Times { get; set; }
     public bool IsActive { get; set; }
+    public int Price { get; set; }
 }

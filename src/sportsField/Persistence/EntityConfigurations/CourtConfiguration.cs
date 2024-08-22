@@ -19,6 +19,8 @@ public class CourtConfiguration : IEntityTypeConfiguration<Court>
         builder.Property(c => c.Lat).HasColumnName("Lat").IsRequired();
         builder.Property(c => c.Lng).HasColumnName("Lng").IsRequired();
         builder.Property(c => c.FormattedAddress).HasColumnName("FormattedAddress").IsRequired();
+        builder.Property(c => c.Price).HasColumnName("Price").IsRequired();
+        builder.Property(c => c.PhoneNumber).HasColumnName("PhoneNumber").IsRequired();
         builder.Property(c => c.CreatedDate).HasColumnName("CreatedDate").IsRequired();
         builder.Property(c => c.UpdatedDate).HasColumnName("UpdatedDate");
         builder.Property(c => c.DeletedDate).HasColumnName("DeletedDate");

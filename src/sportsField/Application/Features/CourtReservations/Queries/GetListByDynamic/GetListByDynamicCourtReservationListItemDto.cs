@@ -15,4 +15,5 @@ public class GetListByDynamicCourtReservationListItemDto
     public TimeSpan EndTime { get; set; }
     public long CreatedTime { get; set; }
     public bool IsActive { get; set; }
+    public int Price { get; set; }
 }

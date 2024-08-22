@@ -53,6 +53,8 @@ public class CreateCourtCommand : IRequest<CreatedCourtResponse>, ISecuredReques
                 Lng = request.CreateCourtCommandDto.Lng,
                 FormattedAddress = request.CreateCourtCommandDto.FormattedAddress,
                 Name = request.CreateCourtCommandDto.Name,
+                Price = request.CreateCourtCommandDto.Price,
+                PhoneNumber = request.CreateCourtCommandDto.PhoneNumber,
                 Attiributes = new List<Attiribute>()
             };
 

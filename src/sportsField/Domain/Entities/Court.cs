@@ -17,6 +17,9 @@ public class Court: Entity<Guid>
     public string Lat {  get; set; }
     public string Lng { get; set; }
     public string FormattedAddress { get; set; }
+    public int Price { get; set; }
+    public string PhoneNumber { get; set; }
+
 
     
     public virtual User? User { get; set; }
@@ -32,9 +35,10 @@ public class Court: Entity<Guid>
         Lat = string.Empty;
         Lng = string.Empty;
         FormattedAddress = string.Empty;
+        PhoneNumber = string.Empty;
     }
 
-    public Court(Guid userId, string name, CourtType courtType, string description, bool ısActive, string lat, string lng, string formattedAddress, User? user, ICollection<CourtImage>? courtImages, ICollection<CourtReservation>? courtReservations, ICollection<Attiribute>? attiributes)
+    public Court(Guid userId, string name, CourtType courtType, string description, bool ısActive, string lat, string lng, string formattedAddress, int price, string phoneNumber, User? user, ICollection<CourtImage>? courtImages, ICollection<CourtReservation>? courtReservations, ICollection<Attiribute>? attiributes)
     {
         UserId = userId;
         Name = name;
@@ -44,6 +48,8 @@ public class Court: Entity<Guid>
         Lat = lat;
         Lng = lng;
         FormattedAddress = formattedAddress;
+        Price = price;
+        PhoneNumber = phoneNumber;
         User = user;
         CourtImages = courtImages;
         CourtReservations = courtReservations;

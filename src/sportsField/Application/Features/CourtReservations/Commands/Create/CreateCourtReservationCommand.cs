@@ -71,7 +71,8 @@ public class CreateCourtReservationCommand : IRequest<CreatedCourtReservationRes
                             CreatedTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
                             StartTime = TimeSpan.Parse(times[0]),
                             EndTime = TimeSpan.Parse(times[1]),
-                            IsActive = true
+                            IsActive = true,
+                            Price = request.CreateCourtReservationCommandDto.Price
                         };
 
                         await _courtReservationRepository.AddAsync(courtReservation);

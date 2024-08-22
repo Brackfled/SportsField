@@ -15,6 +15,7 @@ public class CourtReservation: Entity<Guid>
     public TimeSpan EndTime { get; set; }
     public long CreatedTime { get; set; }
     public bool IsActive { get; set; }
+    public int Price { get; set; }
 
     public virtual Court? Court { get; set; }
     public virtual User? User { get; set; }

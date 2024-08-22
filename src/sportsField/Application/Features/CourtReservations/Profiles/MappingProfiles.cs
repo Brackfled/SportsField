@@ -46,6 +46,7 @@ public class MappingProfiles : Profile
             .ForMember(cr => cr.CourtLat, memberOptions: opt => opt.MapFrom(cr => cr.Court!.Lat))
             .ForMember(cr => cr.CourtLng, memberOptions: opt => opt.MapFrom(cr => cr.Court!.Lng))
             .ForMember(cr => cr.CourtFormattedAddress, memberOptions: opt => opt.MapFrom(cr => cr.Court!.FormattedAddress))
+            .ForMember(cr => cr.CourtPhoneNumber, memberOptions: opt => opt.MapFrom(cr => cr.Court!.PhoneNumber))
             ;
         CreateMap<IPaginate<CourtReservation>, GetListResponse<GetListByUserIdCourtReservationListItemDto>>();
 

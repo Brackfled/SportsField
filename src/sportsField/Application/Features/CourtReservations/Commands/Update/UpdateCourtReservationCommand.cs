@@ -21,6 +21,7 @@ public class UpdateCourtReservationCommand : IRequest<UpdatedCourtReservationRes
     public required TimeSpan EndTime { get; set; }
     public required long CreatedTime { get; set; }
     public required bool IsActive { get; set; }
+    public required int Price { get; set; }
 
     public string[] Roles => [Admin, Write, CourtReservationsOperationClaims.Update];
 
