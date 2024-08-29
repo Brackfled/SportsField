@@ -9,6 +9,5 @@ public class CreateCourtReservationCommandDto
 {
     public IList<Guid> CourtIds { get; set; }
     public IList<DateTime> ReservationDates { get; set; }
-    public IList<string> ReservationTimes { get; set; }
-    public int Price { get; set; }
+    public IList<ReservationDetailDto> ReservationDetailDtos { get; set; }
 }

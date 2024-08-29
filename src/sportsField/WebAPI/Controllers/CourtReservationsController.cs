@@ -16,6 +16,7 @@ using Application.Features.CourtReservations.Queries.GetListByUserId;
 using Application.Features.CourtReservations.Commands.CancelReservation;
 using NArchitecture.Core.Persistence.Dynamic;
 using Application.Features.CourtReservations.Queries.GetListByDynamic;
+using Application.Features.CourtReservations.Commands.UpdatePriceRange;
 
 namespace WebAPI.Controllers;
 

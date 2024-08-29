@@ -6,6 +6,7 @@ using NArchitecture.Core.Localization.Abstraction;
 using Domain.Entities;
 using Application.Services.OperationClaims;
 using Application.Features.OperationClaims.Rules;
+using Domain.Dtos;
 
 namespace Application.Features.CourtReservations.Rules;
 
@@ -90,15 +91,15 @@ public class CourtReservationBusinessRules : BaseBusinessRules
             throw new BusinessException(CourtReservationsBusinessMessages.ReservationNotCancelled);
     }
 
-    public async Task<(IList<string> saveTimes, IList<string> unsaveTimes)> ReservationsTimeControl(IList<string> reservationTimes)
+    public async Task<(IList<ReservationDetailDto> saveTimes, IList<ReservationDetailDto> unsaveTimes)> ReservationsTimeControl(IList<ReservationDetailDto> reservationTimes)
     {
-        IList<string> saveTimes = new List<string>();
-        IList<string> unsaveTimes = new List<string>();
+        IList<ReservationDetailDto> saveTimes = new List<ReservationDetailDto>();
+        IList<ReservationDetailDto> unsaveTimes = new List<ReservationDetailDto>();
         IList<(TimeSpan startTime, TimeSpan endTime)> reservationTimesTuple = new List<(TimeSpan startTime, TimeSpan endTime)>();
 
-        foreach (string item in reservationTimes)
+        foreach (ReservationDetailDto item in reservationTimes)
         {
-            string[] times = item.Split("-");
+            string[] times = item.Times.Split("-");
             TimeSpan startTime = TimeSpan.Parse(times[0]);
             TimeSpan endTime = TimeSpan.Parse(times[1]);
 
