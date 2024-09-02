@@ -17,6 +17,7 @@ using Application.Features.CourtReservations.Commands.CancelReservation;
 using NArchitecture.Core.Persistence.Dynamic;
 using Application.Features.CourtReservations.Queries.GetListByDynamic;
 using Application.Features.CourtReservations.Commands.UpdatePriceRange;
+using Application.Features.CourtReservations.Queries.GetListByCourtUserId;
 
 namespace WebAPI.Controllers;
 
@@ -124,6 +125,14 @@ public class CourtReservationsController : BaseController
     {
         GetListByDynamicCourtReservationQuery query = new() { PageRequest = pageRequest , DynamicQuery = dynamicQuery };
         GetListResponse<GetListByDynamicCourtReservationListItemDto> response = await Mediator.Send(query);
+        return Ok(response);
+    }
+
+    [HttpGet("GetListByCourtUserId")]
+    public async Task<IActionResult> GetListByCourtUserIdCourtReservation([FromQuery] PageRequest pageRequest)
+    {
+        GetListByCourtUserIdCourtReservationQuery query = new() { PageRequest= pageRequest , UserId = getUserIdFromRequest() };
+        GetListResponse<GetListByCourtUserIdCourtReservationListItemDto> response = await Mediator.Send(query);
         return Ok(response);
     }
 }

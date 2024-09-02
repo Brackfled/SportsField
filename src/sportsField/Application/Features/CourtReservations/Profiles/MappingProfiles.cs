@@ -13,6 +13,7 @@ using Application.Features.CourtReservations.Commands.RentReservation;
 using Application.Features.CourtReservations.Queries.GetListByUserId;
 using Application.Features.CourtReservations.Commands.CancelReservation;
 using Application.Features.CourtReservations.Queries.GetListByDynamic;
+using Application.Features.CourtReservations.Queries.GetListByCourtUserId;
 
 namespace Application.Features.CourtReservations.Profiles;
 
@@ -54,5 +55,13 @@ public class MappingProfiles : Profile
 
         CreateMap<CourtReservation, GetListByDynamicCourtReservationListItemDto>();
         CreateMap<IPaginate<CourtReservation>, GetListResponse<GetListByDynamicCourtReservationListItemDto>>();
+
+        CreateMap<CourtReservation, GetListByCourtUserIdCourtReservationListItemDto>()
+            .ForMember(cr => cr.CourtName, memberOptions: opt => opt.MapFrom(cr => cr.Court!.Name))
+            .ForMember(cr => cr.UserFirstName, memberOptions: opt => opt.MapFrom(cr => cr.User!.FirstName))
+            .ForMember(cr => cr.UserLastName, memberOptions: opt => opt.MapFrom(cr => cr.User!.LastName))
+            .ForMember(cr => cr.UserEmail, memberOptions: opt => opt.MapFrom(cr => cr.User!.Email))
+            ;
+        CreateMap<IPaginate<CourtReservation>, GetListResponse<GetListByCourtUserIdCourtReservationListItemDto>>();
     }
 }
