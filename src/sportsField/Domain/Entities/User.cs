@@ -14,4 +14,5 @@ public class User : NArchitecture.Core.Security.Entities.User<Guid>
     public virtual ICollection<EmailAuthenticator> EmailAuthenticators { get; set; } = default!;
     public virtual ICollection<Court>? Courts { get; set; } = default!;
     public virtual ICollection<CourtReservation>? CourtReservations { get; set; } = default!;
+    public virtual ICollection<Retention>? Retentions { get; set; } = default!;
 }

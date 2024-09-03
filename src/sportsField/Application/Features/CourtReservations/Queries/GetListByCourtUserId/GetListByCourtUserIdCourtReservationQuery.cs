@@ -1,4 +1,5 @@
 ﻿using Amazon.Runtime.Internal;
+using Application.Features.CourtReservations.Constants;
 using Application.Features.CourtReservations.Rules;
 using Application.Features.Courts.Rules;
 using Application.Services.Courts;
@@ -7,6 +8,7 @@ using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NArchitecture.Core.Application.Pipelines.Authorization;
 using NArchitecture.Core.Application.Requests;
 using NArchitecture.Core.Application.Responses;
 using NArchitecture.Core.Persistence.Paging;
@@ -17,10 +19,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Features.CourtReservations.Queries.GetListByCourtUserId;
-public class GetListByCourtUserIdCourtReservationQuery: IRequest<GetListResponse<GetListByCourtUserIdCourtReservationListItemDto>>
+public class GetListByCourtUserIdCourtReservationQuery: IRequest<GetListResponse<GetListByCourtUserIdCourtReservationListItemDto>>, ISecuredRequest
 {
     public Guid UserId { get; set; }
     public PageRequest PageRequest { get; set; }
+
+    public string[] Roles => [CourtReservationsOperationClaims.Admin, CourtReservationsOperationClaims.Read];
 
     public class GetListByCourtUserIdCourtReservationQueryHandler: IRequestHandler<GetListByCourtUserIdCourtReservationQuery, GetListResponse<GetListByCourtUserIdCourtReservationListItemDto>>
     {

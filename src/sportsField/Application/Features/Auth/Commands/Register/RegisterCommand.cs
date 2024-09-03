@@ -67,7 +67,14 @@ public class RegisterCommand : IRequest<RegisteredResponse>
             {
                 Id = Guid.NewGuid(),
                 UserId = createdUser.Id,
-                OperationClaimId = 46
+                OperationClaimId = 51
+            });
+            
+            await _userOperationClaimService.AddAsync(new UserOperationClaim
+            {
+                Id = Guid.NewGuid(),
+                UserId = createdUser.Id,
+                OperationClaimId = 52
             });
 
             AccessToken createdAccessToken = await _authService.CreateAccessToken(createdUser);

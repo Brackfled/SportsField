@@ -9,6 +9,7 @@ using NArchitecture.Core.Security.Constants;
 using Application.Features.Attiributes.Constants;
 using Application.Features.Courts.Constants;
 using Application.Features.CourtReservations.Constants;
+using Application.Features.Retentions.Constants;
 
 namespace Persistence.EntityConfigurations;
 
@@ -138,6 +139,20 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
                 new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Create },
                 new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Update },
                 new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Delete },
+            ]
+        );
+        #endregion
+        
+        
+        #region Retentions CRUD
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = RetentionsOperationClaims.Admin },
+                new() { Id = ++lastId, Name = RetentionsOperationClaims.Read },
+                new() { Id = ++lastId, Name = RetentionsOperationClaims.Write },
+                new() { Id = ++lastId, Name = RetentionsOperationClaims.Create },
+                new() { Id = ++lastId, Name = RetentionsOperationClaims.Update },
+                new() { Id = ++lastId, Name = RetentionsOperationClaims.Delete },
             ]
         );
         #endregion

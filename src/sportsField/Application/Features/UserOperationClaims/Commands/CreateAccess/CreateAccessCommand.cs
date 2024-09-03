@@ -49,14 +49,14 @@ public class CreateAccessCommand: MediatR.IRequest<bool>, ITransactionalRequest/
 
             if (request.UserState == UserState.Admin)
             {
-                selectedOperationClaims = [24, 18, 30, 36, 43, 33, 34, 35, 31, 39, 40, 41, 44, 45, 46];
+                selectedOperationClaims = [24, 18, 30, 36, 33, 34, 35, 31, 39, 40, 41, 42, 48, 49, 50, 51, 52];
                 user!.UserState = UserState.Admin;
             }
 
 
             if (request.UserState == UserState.CourtOwner)
             {
-                selectedOperationClaims = [33, 34, 35, 31, 39, 40, 41, 44, 45, 37, 46];
+                selectedOperationClaims = [33, 34, 35, 31, 39, 40, 41, 45, 47, 49, 50, 37, 51, 52];
                 user.UserState = UserState.CourtOwner;
             }
 

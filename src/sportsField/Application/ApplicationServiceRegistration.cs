@@ -27,6 +27,7 @@ using Application.Services.CourtReservations;
 using Application.Services.Stroage;
 using Application.Services.UserOperationClaims;
 using Application.Services.OperationClaims;
+using Application.Services.Retentions;
 
 namespace Application;
 
@@ -75,6 +76,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<IAttiributeService, AttiributeManager>();
         services.AddScoped<ICourtService, CourtManager>();
         services.AddScoped<ICourtReservationService, CourtReservationManager>();
+        services.AddScoped<IRetentionService, RetentionManager>();
         return services;
     }
 

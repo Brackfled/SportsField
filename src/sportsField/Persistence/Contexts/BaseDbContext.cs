@@ -19,6 +19,7 @@ public class BaseDbContext : DbContext
     public DbSet<Attiribute> Attiributes { get; set; }
     public DbSet<Court> Courts { get; set; }
     public DbSet<CourtReservation> CourtReservations { get; set; }
+    public DbSet<Retention> Retentions { get; set; }
 
     public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration)
         : base(dbContextOptions)

@@ -18,6 +18,10 @@ using NArchitecture.Core.Persistence.Dynamic;
 using Application.Features.CourtReservations.Queries.GetListByDynamic;
 using Application.Features.CourtReservations.Commands.UpdatePriceRange;
 using Application.Features.CourtReservations.Queries.GetListByCourtUserId;
+using Application.Utilities.Time;
+using Application.Services.Retentions;
+using Application.Features.Retentions.Rules;
+using System.Text.Json;
 
 namespace WebAPI.Controllers;
 
@@ -25,6 +29,15 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class CourtReservationsController : BaseController
 {
+    private readonly IRetentionService _retentionService;
+    private readonly RetentionBusinessRules _retentionBusinessRules;
+
+    public CourtReservationsController(IRetentionService retentionService, RetentionBusinessRules retentionBusinessRules)
+    {
+        _retentionService = retentionService;
+        _retentionBusinessRules = retentionBusinessRules;
+    }
+
     [HttpPost]
     public async Task<ActionResult<CreatedCourtReservationResponse>> Add([FromBody] CreateCourtReservationCommandDto createCourtReservationCommandDto)
     {
@@ -133,6 +146,27 @@ public class CourtReservationsController : BaseController
     {
         GetListByCourtUserIdCourtReservationQuery query = new() { PageRequest= pageRequest , UserId = getUserIdFromRequest() };
         GetListResponse<GetListByCourtUserIdCourtReservationListItemDto> response = await Mediator.Send(query);
+        return Ok(response);
+    }
+
+    [HttpPost("CreateWithRetention")]
+    public async Task<IActionResult> CreateWithRetentionCourtReservation(Guid retentionId)
+    {
+        Retention? retention = await _retentionService.GetAsync(r => r.Id == retentionId);
+        await _retentionBusinessRules.RetentionShouldExistWhenSelected(retention);
+
+        RetentionCommandDto? retentionCommandDto = JsonSerializer.Deserialize<RetentionCommandDto>(retention!.Command);
+        IList<DateTime> dateTimes = TimeUtilities.ConvertDateTimeListAsync(retentionCommandDto!);
+        CreateCourtReservationCommandDto createCourtReservationCommandDto = new() 
+        {
+            CourtIds = retentionCommandDto!.CourtIds,
+            ReservationDates = dateTimes,
+            ReservationDetailDtos = retentionCommandDto!.ReservationDetailDtos
+        };
+
+        CreateCourtReservationCommand createCourtReservationCommand = new() { CreateCourtReservationCommandDto = createCourtReservationCommandDto, UserId = getUserIdFromRequest() };
+
+        CreatedCourtReservationResponse response = await Mediator.Send(createCourtReservationCommand);
         return Ok(response);
     }
 }
