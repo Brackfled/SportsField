@@ -9,6 +9,7 @@ using MediatR;
 using static Application.Features.Retentions.Constants.RetentionsOperationClaims;
 using Domain.Dtos;
 using System.Text.Json;
+using System.Globalization;
 
 namespace Application.Features.Retentions.Commands.Create;
 
@@ -36,9 +37,10 @@ public class CreateRetentionCommand : IRequest<CreatedRetentionResponse>, ISecur
         public async Task<CreatedRetentionResponse> Handle(CreateRetentionCommand request, CancellationToken cancellationToken)
         {
             IList<string> days = new List<string>();
+            CultureInfo enCulture = new CultureInfo("en-US");
             foreach (DateTime item in request.CreateRetentionCommandDto.CreateCourtReservationCommandDto.ReservationDates)
             {
-                string day = item.DayOfWeek.ToString();
+                string day = item.ToString("dddd", enCulture);
                 days.Add(day);
             }
 

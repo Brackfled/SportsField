@@ -2,7 +2,9 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using Application;
+using Hangfire;
 using Infrastructure;
+using Infrastructure.Adapters.BackgroundWorkers.Hangfire;
 using Infrastructure.Adapters.Stroage.AWS;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -51,6 +53,11 @@ builder.Services.AddSingleton<IAmazonS3>(provider =>
     };
     return new AmazonS3Client(credentials, config);
 });
+builder.Services.AddHangfire(config =>
+{
+    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("SportsFieldDb"));
+});
+
 
 const string tokenOptionsConfigurationSection = "TokenOptions";
 TokenOptions tokenOptions =
@@ -121,6 +128,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseHangfireDashboard();
+
+RecurringJob.AddOrUpdate<HangfireJobs>("DeleteOldReservations",
+        j => j.DeleteOldReservations(),
+        Cron.MinuteInterval(15)
+    );
+app.UseHangfireServer();
 
 const string webApiConfigurationSection = "WebAPIConfiguration";
 WebApiConfiguration webApiConfiguration =

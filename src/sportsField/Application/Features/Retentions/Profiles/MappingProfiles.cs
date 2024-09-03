@@ -8,6 +8,7 @@ using NArchitecture.Core.Application.Responses;
 using Domain.Entities;
 using NArchitecture.Core.Persistence.Paging;
 using Application.Features.CourtReservations.Queries.GetListByUserId;
+using Application.Features.Retentions.Queries.GetListByUserId;
 
 namespace Application.Features.Retentions.Profiles;
 
@@ -29,7 +30,6 @@ public class MappingProfiles : Profile
         CreateMap<Retention, GetListRetentionListItemDto>();
         CreateMap<IPaginate<Retention>, GetListResponse<GetListRetentionListItemDto>>();
 
-        CreateMap<Retention, GetListByUserIdCourtReservationListItemDto>();
-        CreateMap<ICollection<Retention>, ICollection<GetListByUserIdCourtReservationListItemDto>>();
+        CreateMap<Retention, GetListByUserIdRetentionListItemDto>();
     }
 }

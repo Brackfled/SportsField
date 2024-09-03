@@ -150,7 +150,7 @@ public class CourtReservationsController : BaseController
     }
 
     [HttpPost("CreateWithRetention")]
-    public async Task<IActionResult> CreateWithRetentionCourtReservation(Guid retentionId)
+    public async Task<IActionResult> CreateWithRetentionCourtReservation([FromBody] Guid retentionId)
     {
         Retention? retention = await _retentionService.GetAsync(r => r.Id == retentionId);
         await _retentionBusinessRules.RetentionShouldExistWhenSelected(retention);

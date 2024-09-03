@@ -27,4 +27,5 @@ public interface ICourtReservationService
     Task<CourtReservation> AddAsync(CourtReservation courtReservation);
     Task<CourtReservation> UpdateAsync(CourtReservation courtReservation);
     Task<CourtReservation> DeleteAsync(CourtReservation courtReservation, bool permanent = false);
+    Task<ICollection<CourtReservation>> DeleteOldReservationsAsync();
 }

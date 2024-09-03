@@ -74,4 +74,14 @@ public class CourtReservationManager : ICourtReservationService
 
         return deletedCourtReservation;
     }
+
+    public async Task<ICollection<CourtReservation>> DeleteOldReservationsAsync()
+    {
+        ICollection<CourtReservation> courtReservations = await _courtReservationRepository.GetAllAsync();
+
+        ICollection<CourtReservation> deletedCourtReservations = courtReservations.Where(cr => cr.AvailableDate <= DateTime.UtcNow.Date && cr.StartTime < DateTime.UtcNow.TimeOfDay).ToList();
+
+        await _courtReservationRepository.DeleteRangeAsync(deletedCourtReservations, true);
+        return deletedCourtReservations;
+    }
 }

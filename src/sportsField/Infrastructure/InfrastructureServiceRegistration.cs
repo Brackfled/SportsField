@@ -1,5 +1,6 @@
 ﻿using Application.Services.ImageService;
 using Application.Services.Stroage;
+using Hangfire;
 using Infrastructure.Adapters.ImageService;
 using Infrastructure.Adapters.Stroage.AWS;
 using Microsoft.Extensions.DependencyInjection;
