@@ -1,5 +1,6 @@
 ﻿using Application.Features.SFFiles.Commands.CreateCourtImage;
 using Application.Features.SFFiles.Commands.DeleteCourtImage;
+using Application.Features.SFFiles.Commands.UpdateMainImage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,14 @@ public class SFFilesController : BaseController
     {
         DeleteCourtImageCommand command = new() { Id = id , UserId = getUserIdFromRequest()};
         DeletedCourtImageResponse response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpPut("UpdateCourtImageMainImage")]
+    public async Task<IActionResult> UpdateMainImageCourtImage([FromRoute] Guid courtId, [FromBody]Guid id)
+    {
+        UpdateMainImageCourtImageCommand command = new() { UserId = getUserIdFromRequest(), CourtId = courtId, Id = id };
+        UpdateMainImageCourtImageResponse response = await Mediator.Send(command);
         return Ok(response);
     }
 }

@@ -7,6 +7,7 @@ using AutoMapper;
 using NArchitecture.Core.Application.Responses;
 using Domain.Entities;
 using NArchitecture.Core.Persistence.Paging;
+using Application.Features.Attiributes.Queries.GetListByDynamic;
 
 namespace Application.Features.Attiributes.Profiles;
 
@@ -27,5 +28,10 @@ public class MappingProfiles : Profile
 
         CreateMap<Attiribute, GetListAttiributeListItemDto>();
         CreateMap<IPaginate<Attiribute>, GetListResponse<GetListAttiributeListItemDto>>();
+
+        CreateMap<Attiribute, GetListByDynamicAttiributeListItemDto>()
+            .ForMember(a => a.Courts, memberOptions: opt => opt.MapFrom(a => a.Courts!))
+            ;
+        CreateMap<IPaginate<Attiribute>, GetListResponse<GetListByDynamicAttiributeListItemDto>>();
     }
 }
