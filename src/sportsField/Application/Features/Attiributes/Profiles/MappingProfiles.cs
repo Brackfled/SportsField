@@ -30,8 +30,8 @@ public class MappingProfiles : Profile
         CreateMap<IPaginate<Attiribute>, GetListResponse<GetListAttiributeListItemDto>>();
 
         CreateMap<Attiribute, GetListByDynamicAttiributeListItemDto>()
-            .ForMember(a => a.Courts, memberOptions: opt => opt.MapFrom(a => a.Courts!))
-            ;
+           .ForMember(a => a.Courts, memberOptions: opt => opt.MapFrom(a => a.Courts!))
+           ;
         CreateMap<IPaginate<Attiribute>, GetListResponse<GetListByDynamicAttiributeListItemDto>>();
     }
 }

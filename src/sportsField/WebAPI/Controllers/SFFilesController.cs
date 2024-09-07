@@ -26,7 +26,7 @@ public class SFFilesController : BaseController
     }
 
     [HttpPut("UpdateCourtImageMainImage")]
-    public async Task<IActionResult> UpdateMainImageCourtImage([FromRoute] Guid courtId, [FromBody]Guid id)
+    public async Task<IActionResult> UpdateMainImageCourtImage([FromQuery] Guid courtId, [FromBody]Guid id)
     {
         UpdateMainImageCourtImageCommand command = new() { UserId = getUserIdFromRequest(), CourtId = courtId, Id = id };
         UpdateMainImageCourtImageResponse response = await Mediator.Send(command);

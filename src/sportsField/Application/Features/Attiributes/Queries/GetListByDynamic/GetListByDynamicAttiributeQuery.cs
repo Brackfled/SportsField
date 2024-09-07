@@ -15,12 +15,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Features.Attiributes.Queries.GetListByDynamic;
-public class GetListByDynamicAttiributeQuery: IRequest<GetListResponse<GetListByDynamicAttiributeListItemDto>>
+public class GetListByDynamicAttiributeQuery : IRequest<GetListResponse<GetListByDynamicAttiributeListItemDto>>
 {
     public PageRequest PageRequest { get; set; }
     public DynamicQuery DynamicQuery { get; set; }
 
-    public class GetListByDynamicAttiributeQueryHandler: IRequestHandler<GetListByDynamicAttiributeQuery, GetListResponse<GetListByDynamicAttiributeListItemDto>>
+    public class GetListByDynamicAttiributeQueryHandler : IRequestHandler<GetListByDynamicAttiributeQuery, GetListResponse<GetListByDynamicAttiributeListItemDto>>
     {
         private readonly IAttiributeRepository _attiributeRepository;
         private IMapper _mapper;
@@ -34,7 +34,7 @@ public class GetListByDynamicAttiributeQuery: IRequest<GetListResponse<GetListBy
         public async Task<GetListResponse<GetListByDynamicAttiributeListItemDto>> Handle(GetListByDynamicAttiributeQuery request, CancellationToken cancellationToken)
         {
             IPaginate<Attiribute> attiributes = await _attiributeRepository.GetListByDynamicAsync(
-                    dynamic:request.DynamicQuery,
+                    dynamic: request.DynamicQuery,
                     include: a => a.Include(opt => opt.Courts!),
                     size: request.PageRequest.PageSize,
                     index: request.PageRequest.PageIndex,

@@ -91,6 +91,20 @@ public class CourtReservationBusinessRules : BaseBusinessRules
             throw new BusinessException(CourtReservationsBusinessMessages.ReservationNotCancelled);
     }
 
+    public async Task CourtShouldBeAvailableWeek(Court court)
+    {
+        ICollection<CourtReservation>? courtReservations = await _courtReservationRepository.GetAllAsync(cr => cr.CourtId == court.Id);
+        int nowDate = GetDateTimesWeek(DateTime.UtcNow);
+
+        foreach (CourtReservation courtReservation in courtReservations)
+        {
+            int crDate = GetDateTimesWeek(courtReservation.AvailableDate);
+
+            if (crDate == nowDate)
+                throw new BusinessException(CourtReservationsBusinessMessages.WeekNotAvailable);
+        }
+    }
+
     public async Task<(IList<ReservationDetailDto> saveTimes, IList<ReservationDetailDto> unsaveTimes)> ReservationsTimeControl(IList<ReservationDetailDto> reservationTimes)
     {
         IList<ReservationDetailDto> saveTimes = new List<ReservationDetailDto>();

@@ -94,10 +94,10 @@ public class CourtReservationsController : BaseController
     }
 
     [HttpPut("UpdateActivity")]
-    public async Task<IActionResult> UpdateActivityCourtReservation([FromBody] Guid id, bool isActive)
+    public async Task<IActionResult> UpdateActivityCourtReservation([FromBody] IList<Guid> ids, bool isActive)
     {
-        UpdateActivityCourtReservationCommand command = new() { Id = id, IsActive = isActive, UserId = getUserIdFromRequest() };
-        UpdatedActivityCourtReservationResponse response = await Mediator.Send(command);
+        UpdateActivityCourtReservationCommand command = new() { Ids = ids, IsActive = isActive, UserId = getUserIdFromRequest() };
+        ICollection<UpdatedActivityCourtReservationResponse> response = await Mediator.Send(command);
         return Ok(response);
     }
 

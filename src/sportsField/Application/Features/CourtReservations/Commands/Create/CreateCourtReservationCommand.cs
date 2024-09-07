@@ -54,6 +54,7 @@ public class CreateCourtReservationCommand : IRequest<CreatedCourtReservationRes
                 Court? court = await _courtService.GetAsync(c =>c.Id == courtId);
                 await _courtBusinessRules.CourtShouldExistWhenSelected(court);
                 await _courtBusinessRules.UserIdNotMatchedCourtUserId(court!.Id, request.UserId, Admin);
+                await _courtReservationBusinessRules.CourtShouldBeAvailableWeek(court);
 
                 foreach (DateTime dateTime in request.CreateCourtReservationCommandDto.ReservationDates)
                 {

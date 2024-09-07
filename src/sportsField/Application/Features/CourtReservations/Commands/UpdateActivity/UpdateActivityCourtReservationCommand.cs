@@ -16,10 +16,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Features.CourtReservations.Commands.UpdateActivity;
-public class UpdateActivityCourtReservationCommand: IRequest<UpdatedActivityCourtReservationResponse>, ITransactionalRequest, ISecuredRequest, ICacheRemoverRequest
+public class UpdateActivityCourtReservationCommand: IRequest<ICollection<UpdatedActivityCourtReservationResponse>>, ITransactionalRequest, ISecuredRequest, ICacheRemoverRequest
 {
     public Guid UserId { get; set; }
-    public Guid Id { get; set; }
+    public IList<Guid> Ids { get; set; }
     public bool IsActive { get; set; }
 
     public string[] Roles => [CourtReservationsOperationClaims.Admin, CourtReservationsOperationClaims.Update];
@@ -30,7 +30,7 @@ public class UpdateActivityCourtReservationCommand: IRequest<UpdatedActivityCour
 
     public string[]? CacheGroupKey => ["GetCourtReservations"];
 
-    public class UpdateActivityCourtReservationCommandHandler: IRequestHandler<UpdateActivityCourtReservationCommand, UpdatedActivityCourtReservationResponse>
+    public class UpdateActivityCourtReservationCommandHandler: IRequestHandler<UpdateActivityCourtReservationCommand, ICollection<UpdatedActivityCourtReservationResponse>>
     {
         private readonly ICourtReservationRepository _courtReservationRepository;
         private readonly CourtReservationBusinessRules _courtReservationBusinessRules;
@@ -45,15 +45,22 @@ public class UpdateActivityCourtReservationCommand: IRequest<UpdatedActivityCour
             _mapper = mapper;
         }
 
-        public async Task<UpdatedActivityCourtReservationResponse> Handle(UpdateActivityCourtReservationCommand request, CancellationToken cancellationToken)
+        public async Task<ICollection<UpdatedActivityCourtReservationResponse>> Handle(UpdateActivityCourtReservationCommand request, CancellationToken cancellationToken)
         {
-            CourtReservation? courtReservation = await _courtReservationRepository.GetAsync(cr => cr.Id == request.Id);
-            await _courtReservationBusinessRules.CourtReservationShouldExistWhenSelected(courtReservation);
-            await _courtBusinessRules.UserIdNotMatchedCourtUserId(courtReservation!.CourtId, request.UserId, CourtReservationsOperationClaims.Admin);
+            ICollection<CourtReservation> courtReservations = new List<CourtReservation>();
+            foreach (Guid id in request.Ids)
+            {
+                CourtReservation? courtReservation = await _courtReservationRepository.GetAsync(cr => cr.Id == id);
+                await _courtReservationBusinessRules.CourtReservationShouldExistWhenSelected(courtReservation);
+                await _courtBusinessRules.UserIdNotMatchedCourtUserId(courtReservation!.CourtId, request.UserId, CourtReservationsOperationClaims.Admin);
+                courtReservation.IsActive = request.IsActive;
+                courtReservations.Add(courtReservation);
+            }
 
-            courtReservation.IsActive = request.IsActive;
-            CourtReservation updatedCourtReservation = await _courtReservationRepository.UpdateAsync(courtReservation);
-            UpdatedActivityCourtReservationResponse response = _mapper.Map<UpdatedActivityCourtReservationResponse>(updatedCourtReservation);
+            ICollection<CourtReservation> updatedCourtReservations =  await _courtReservationRepository.UpdateRangeAsync(courtReservations);
+
+
+            ICollection<UpdatedActivityCourtReservationResponse> response = _mapper.Map<ICollection<UpdatedActivityCourtReservationResponse>>(updatedCourtReservations);
             return response;
         }
     }
