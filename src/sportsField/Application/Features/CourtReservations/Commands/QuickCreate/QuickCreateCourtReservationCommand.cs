@@ -53,7 +53,6 @@ public class QuickCreateCourtReservationCommand: IRequest<QuickCreatedCourtReser
             Court? court = await _courtService.GetAsync(c => c.Id == request.QuickCreateCourtReservationCommandDto.CourtId);
             await _courtBusinessRules.CourtShouldExistWhenSelected(court);
             await _courtBusinessRules.UserIdNotMatchedCourtUserId(court!.Id, request.UserId, CourtReservationsOperationClaims.Admin);
-            await _courtReservationBusinessRules.CourtShouldBeAvailableWeek(court);
 
             string[] times = request.QuickCreateCourtReservationCommandDto.Times.Split("-");
 
