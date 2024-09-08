@@ -46,9 +46,11 @@ public class UpdateActivityCourtReservationCommand: IRequest<ICollection<Updated
         private readonly CourtBusinessRules _courtBusinessRules;
         private IMapper _mapper;
 
-        public UpdateActivityCourtReservationCommandHandler(ICourtReservationRepository courtReservationRepository, NArchitecture.Core.Mailing.IMailService mailService, CourtReservationBusinessRules courtReservationBusinessRules, CourtBusinessRules courtBusinessRules, IMapper mapper)
+        public UpdateActivityCourtReservationCommandHandler(ICourtReservationRepository courtReservationRepository, IUserService userService, UserBusinessRules userBusinessRules, NArchitecture.Core.Mailing.IMailService mailService, CourtReservationBusinessRules courtReservationBusinessRules, CourtBusinessRules courtBusinessRules, IMapper mapper)
         {
             _courtReservationRepository = courtReservationRepository;
+            _userService = userService;
+            _userBusinessRules = userBusinessRules;
             _mailService = mailService;
             _courtReservationBusinessRules = courtReservationBusinessRules;
             _courtBusinessRules = courtBusinessRules;
@@ -66,8 +68,7 @@ public class UpdateActivityCourtReservationCommand: IRequest<ICollection<Updated
                 courtReservation.IsActive = request.IsActive;
                 courtReservations.Add(courtReservation);
 
-
-                if (courtReservation.UserId != null)
+                if (courtReservation.UserId != null && request.IsActive == false)
                 {
                     User? user = await _userService.GetAsync(u => u.Id == courtReservation.UserId);
                     await _userBusinessRules.UserShouldBeExistsWhenSelected(user);
