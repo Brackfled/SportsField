@@ -29,6 +29,7 @@ using Application.Services.UserOperationClaims;
 using Application.Services.OperationClaims;
 using Application.Services.Retentions;
 using Hangfire;
+using Application.Services.Suspends;
 
 namespace Application;
 
@@ -78,6 +79,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<ICourtService, CourtManager>();
         services.AddScoped<ICourtReservationService, CourtReservationManager>();
         services.AddScoped<IRetentionService, RetentionManager>();
+        services.AddScoped<ISuspendService, SuspendManager>();
         return services;
     }
 

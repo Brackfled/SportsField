@@ -142,4 +142,10 @@ public class CourtReservationBusinessRules : BaseBusinessRules
         return (saveTimes, unsaveTimes);
 
     }
+
+    public async Task CourtReservationShouldBeRented(CourtReservation courtReservation)
+    {
+        if (courtReservation.UserId == null)
+            throw new BusinessException(CourtReservationsBusinessMessages.CourtReservationNotRented);
+    }
 }

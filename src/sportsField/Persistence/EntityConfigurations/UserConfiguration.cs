@@ -33,6 +33,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(u => u.Courts).WithOne(u => u.User).HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(u => u.CourtReservations).WithOne(u => u.User).HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.SetNull);
         builder.HasMany(u => u.Retentions).WithOne(u => u.User).HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasMany(u => u.Suspends).WithOne(u => u.User).HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.Cascade);
 
         builder.HasData(_seeds);
 

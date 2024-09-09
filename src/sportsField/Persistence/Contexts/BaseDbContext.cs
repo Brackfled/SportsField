@@ -20,6 +20,7 @@ public class BaseDbContext : DbContext
     public DbSet<Court> Courts { get; set; }
     public DbSet<CourtReservation> CourtReservations { get; set; }
     public DbSet<Retention> Retentions { get; set; }
+    public DbSet<Suspend> Suspends { get; set; }
 
     public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration)
         : base(dbContextOptions)

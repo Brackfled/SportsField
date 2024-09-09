@@ -10,6 +10,7 @@ using Application.Features.Attiributes.Constants;
 using Application.Features.Courts.Constants;
 using Application.Features.CourtReservations.Constants;
 using Application.Features.Retentions.Constants;
+using Application.Features.Suspends.Constants;
 
 namespace Persistence.EntityConfigurations;
 
@@ -49,6 +50,7 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
     private IEnumerable<OperationClaim> getFeatureOperationClaims(int initialId)
     {
         int lastId = initialId;
+        int newLastId = 54;
         List<OperationClaim> featureOperationClaims = new();
 
         #region Auth
@@ -153,6 +155,20 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
                 new() { Id = ++lastId, Name = RetentionsOperationClaims.Create },
                 new() { Id = ++lastId, Name = RetentionsOperationClaims.Update },
                 new() { Id = ++lastId, Name = RetentionsOperationClaims.Delete },
+            ]
+        );
+        #endregion
+        
+        
+        #region Suspends CRUD
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = newLastId, Name = SuspendsOperationClaims.Admin },
+                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Read },
+                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Write },
+                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Create },
+                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Update },
+                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Delete },
             ]
         );
         #endregion

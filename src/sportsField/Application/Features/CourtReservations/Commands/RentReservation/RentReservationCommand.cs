@@ -1,6 +1,7 @@
 ﻿using Amazon.Runtime.Internal;
 using Application.Features.CourtReservations.Constants;
 using Application.Features.CourtReservations.Rules;
+using Application.Features.Suspends.Rules;
 using Application.Features.Users.Rules;
 using Application.Services.Repositories;
 using Application.Services.UsersService;
@@ -40,15 +41,17 @@ public class RentReservationCommand: IRequest<RentReservationResponse>, ITransac
         private readonly IMailService _mailService;
         private readonly CourtReservationBusinessRules _courtReservationBusinessRules;
         private readonly UserBusinessRules _userBusinessRules;
+        private readonly SuspendBusinessRules _suspendBusinessRules;
         private IMapper _mapper;
 
-        public RentReservationCommandHandler(ICourtReservationRepository courtReservationRepository, IUserService userService, IMailService mailService, CourtReservationBusinessRules courtReservationBusinessRules, UserBusinessRules userBusinessRules, IMapper mapper)
+        public RentReservationCommandHandler(ICourtReservationRepository courtReservationRepository, IUserService userService, IMailService mailService, CourtReservationBusinessRules courtReservationBusinessRules, UserBusinessRules userBusinessRules, SuspendBusinessRules suspendBusinessRules, IMapper mapper)
         {
             _courtReservationRepository = courtReservationRepository;
             _userService = userService;
             _mailService = mailService;
             _courtReservationBusinessRules = courtReservationBusinessRules;
             _userBusinessRules = userBusinessRules;
+            _suspendBusinessRules = suspendBusinessRules;
             _mapper = mapper;
         }
 
@@ -56,6 +59,8 @@ public class RentReservationCommand: IRequest<RentReservationResponse>, ITransac
         {
             User? user = await _userService.GetAsync(u => u.Id == request.UserId);
             await _userBusinessRules.UserShouldBeExistsWhenSelected(user);
+
+            await _suspendBusinessRules.UserNotBeSuspended(user!);
 
             CourtReservation? courtReservation = await _courtReservationRepository.GetAsync(cr => cr.Id == request.Id, include: cr => cr.Include(opt => opt.Court!));
             await _courtReservationBusinessRules.CourtReservationShouldExistWhenSelected(courtReservation);
