@@ -29,4 +29,5 @@ public interface IUserService
     Task<User> AddAsync(User user);
     Task<User> UpdateAsync(User user);
     Task<User> DeleteAsync(User user, bool permanent = false);
+    Task<ICollection<User>> GetAllAsync(Expression<Func<User, bool>>? predicate = null);
 }

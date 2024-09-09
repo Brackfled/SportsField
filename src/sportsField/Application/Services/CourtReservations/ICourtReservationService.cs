@@ -28,4 +28,5 @@ public interface ICourtReservationService
     Task<CourtReservation> UpdateAsync(CourtReservation courtReservation);
     Task<CourtReservation> DeleteAsync(CourtReservation courtReservation, bool permanent = false);
     Task<ICollection<CourtReservation>> DeleteOldReservationsAsync();
+    Task<ICollection<CourtReservation>> GetAllAsync(Expression<Func<CourtReservation, bool>>? predicate = null);
 }

@@ -12,6 +12,7 @@ using Application.Features.Courts.Commands.UpdateActivity;
 using NArchitecture.Core.Persistence.Dynamic;
 using Application.Features.Courts.Queries.GetListByDynamic;
 using Application.Features.Courts.Queries.GetListByIsActive;
+using Application.Features.Courts.Queries.GetListCeoItems;
 
 namespace WebAPI.Controllers;
 
@@ -95,6 +96,13 @@ public class CourtsController : BaseController
     public async Task<IActionResult> GetListByIsActiveCourt([FromQuery] GetListByIsActiveCourtQuery query)
     {
         GetListResponse<GetListByIsActiveCourtListItemDto> response = await Mediator.Send(query);
+        return Ok(response);
+    }
+
+    [HttpGet("GetListCeoItems")]
+    public async Task<IActionResult> GetListCeoItems()
+    {
+        GetListCeoItemsDto response = await Mediator.Send(new GetListCeoItemsQuery());
         return Ok(response);
     }
 }

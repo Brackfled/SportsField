@@ -83,4 +83,10 @@ public class CourtReservationManager : ICourtReservationService
         await _courtReservationRepository.DeleteRangeAsync(deletedCourtReservations, true);
         return deletedCourtReservations;
     }
+
+    public async Task<ICollection<CourtReservation>> GetAllAsync(Expression<Func<CourtReservation, bool>>? predicate = null)
+    {
+        ICollection<CourtReservation> courtReservations = await _courtReservationRepository.GetAllAsync(predicate);
+        return courtReservations;
+    }
 }

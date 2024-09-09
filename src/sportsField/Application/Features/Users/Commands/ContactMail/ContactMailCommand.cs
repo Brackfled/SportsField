@@ -28,7 +28,7 @@ public class ContactMailCommand: IRequest<bool>
 
         public Task<bool> Handle(ContactMailCommand request, CancellationToken cancellationToken)
         {
-            var toEmailList = new List<MailboxAddress> { new(name: "iletişim@flepix.com.tr", address: "iletişim@flepix.com.tr") };
+            var toEmailList = new List<MailboxAddress> { new(name: "flepix@hirdavatkolisi.com", address: "flepix@hirdavatkolisi.com") };
 
             if (toEmailList == null)
                 return Task.FromResult(false);

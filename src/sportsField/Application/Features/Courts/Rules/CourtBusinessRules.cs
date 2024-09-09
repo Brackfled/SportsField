@@ -57,9 +57,12 @@ public class CourtBusinessRules : BaseBusinessRules
         OperationClaim? operationClaim = await _operationClaimService.GetAsync(oc => oc.Name == operationClaimName);
         await _operationClaimBusinessRules.OperationClaimShouldExistWhenSelected(operationClaim);
 
+        OperationClaim? adminClaim = await _operationClaimService.GetAsync(oc => oc.Name == "Admin");
+        await _operationClaimBusinessRules.OperationClaimShouldExistWhenSelected(adminClaim);
+
         ICollection<OperationClaim>? operationClaims = await _userOperationClaimRepository.GetOperationClaimsByUserIdAsync(userId);
 
-        if (court!.UserId != userId && !operationClaims.Contains(operationClaim!))
+        if (court!.UserId != userId && !operationClaims.Any(oc => oc.Id == operationClaim!.Id) && !operationClaims.Any(oc => oc.Id == adminClaim!.Id))
             throw new BusinessException(CourtsBusinessMessages.UserIdNotMatchedCourtUserId);
 
     }

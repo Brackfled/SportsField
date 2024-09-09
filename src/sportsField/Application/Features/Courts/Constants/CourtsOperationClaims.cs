@@ -12,4 +12,5 @@ public static class CourtsOperationClaims
     public const string Create = $"{_section}.Create";
     public const string Update = $"{_section}.Update";
     public const string Delete = $"{_section}.Delete";
+    public const string CeoItemsRead = $"CeoItems.Read";
 }

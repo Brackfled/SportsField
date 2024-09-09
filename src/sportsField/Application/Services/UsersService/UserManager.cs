@@ -78,4 +78,10 @@ public class UserManager : IUserService
 
         return deletedUser;
     }
+
+    public async Task<ICollection<User>> GetAllAsync(Expression<Func<User, bool>>? predicate = null)
+    {
+        ICollection<User> users = await _userRepository.GetAllAsync(predicate);
+        return users;
+    }
 }
