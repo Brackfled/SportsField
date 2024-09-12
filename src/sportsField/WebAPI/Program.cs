@@ -33,8 +33,6 @@ builder.Services.AddApplicationServices(
         .Configuration.GetSection("SeriLogConfigurations:FileLogConfiguration")
         .Get<FileLogConfiguration>()
         ?? throw new InvalidOperationException("FileLogConfiguration section cannot found in configuration."),
-    elasticSearchConfig: builder.Configuration.GetSection("ElasticSearchConfig").Get<ElasticSearchConfig>()
-        ?? throw new InvalidOperationException("ElasticSearchConfig section cannot found in configuration."),
     tokenOptions: builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>()
         ?? throw new InvalidOperationException("TokenOptions section cannot found in configuration.")
 );
@@ -82,12 +80,6 @@ builder
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddCors(opt =>
-    opt.AddDefaultPolicy(p =>
-    {
-        p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-    })
-);
 builder.Services.AddSwaggerGen(opt =>
 {
     opt.AddSecurityDefinition(

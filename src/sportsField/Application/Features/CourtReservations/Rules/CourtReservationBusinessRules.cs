@@ -60,15 +60,12 @@ public class CourtReservationBusinessRules : BaseBusinessRules
 
     private int GetDateTimesWeek(DateTime dateTime)
     {
-        // Türkiye'de haftanýn Pazartesi gününden baþlamasý ve haftalarýn yýl bazýnda hesaplanmasý için ISO 8601 standardýna uygun þekilde:
         var culture = new System.Globalization.CultureInfo("tr-TR");
         var calendar = culture.Calendar;
 
-        // Haftanýn Pazartesi günü baþladýðý bir kuralla hesaplama yapmak için:
         var firstDayOfWeek = DayOfWeek.Monday;
-        var weekRule = System.Globalization.CalendarWeekRule.FirstFourDayWeek; // Haftanýn en az 4 gününü içeren ilk hafta
+        var weekRule = System.Globalization.CalendarWeekRule.FirstFourDayWeek;
 
-        // Haftanýn yýl içerisindeki numarasýný elde etmek için:
         int weekNumber = calendar.GetWeekOfYear(dateTime, weekRule, firstDayOfWeek);
 
         return weekNumber;
@@ -147,5 +144,30 @@ public class CourtReservationBusinessRules : BaseBusinessRules
     {
         if (courtReservation.UserId == null)
             throw new BusinessException(CourtReservationsBusinessMessages.CourtReservationNotRented);
+    }
+
+    public async Task UserMaxOneOnTheSameDay(CourtReservation courtReservation, User user)
+    {
+        ICollection<CourtReservation>? courtReservations = await _courtReservationRepository.GetAllAsync(p => p.AvailableDate == courtReservation.AvailableDate && p.UserId == user.Id);
+
+        if(courtReservations != null)
+                throw new BusinessException(CourtReservationsBusinessMessages.UserMaxOneOnTheSameDayRenting);
+    }
+
+    public async Task UserHaveMaxFiveReservationPerWeek(CourtReservation courtReservation, User user)
+    {
+        ICollection<CourtReservation> courtReservations = await _courtReservationRepository.GetAllAsync(cr => cr.UserId == user.Id);
+        int counter = 0;
+        int weeNumberReservation = GetDateTimesWeek(courtReservation.AvailableDate);
+
+        foreach(CourtReservation item in courtReservations)
+        {
+            int weekNumber = GetDateTimesWeek(item.AvailableDate);
+            if(weeNumberReservation == weekNumber)
+                counter++;
+        }
+
+        if (counter >= 3)
+            throw new BusinessException(CourtReservationsBusinessMessages.UserMaxFiveReservationPerWeek);
     }
 }

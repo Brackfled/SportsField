@@ -10,4 +10,6 @@ public static class CourtReservationsBusinessMessages
     public const string ReservationNotCancelled = "Randevu iptal edilemez!";
     public const string WeekNotAvailable = "Hali Hazýrda Bu Hafta Randevu Oluþturulmuþ!";
     public const string CourtReservationNotRented = "Reservasyon Kirlanmamýþ!";
+    public const string UserMaxOneOnTheSameDayRenting = "Kullanýcý bir günde en fazla bir randevu kiralayabilir.";
+    public const string UserMaxFiveReservationPerWeek = "Kullanýcý bir haftada en fazla üç randevu kiralayabilir.";
 }

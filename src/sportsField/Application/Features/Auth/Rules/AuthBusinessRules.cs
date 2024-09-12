@@ -53,7 +53,7 @@ public class AuthBusinessRules : BaseBusinessRules
     public async Task UserShouldBeExistsWhenSelected(User? user)
     {
         if (user == null)
-            await throwBusinessException(AuthMessages.UserDontExists);
+            await throwBusinessException(AuthMessages.PasswordDontMatch);
     }
 
     public async Task UserShouldNotBeHaveAuthenticator(User user)

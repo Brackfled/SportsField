@@ -7,8 +7,10 @@ using Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using NArchitecture.Core.Application.Pipelines.Authorization;
+using NArchitecture.Core.Application.Pipelines.Logging;
 using NArchitecture.Core.Application.Pipelines.Transaction;
 using NArchitecture.Core.Persistence.Paging;
+using NArchitecture.Core.Security.Constants;
 using Nest;
 using System;
 using System.Collections.Generic;
@@ -17,12 +19,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Features.UserOperationClaims.Commands.CreateAccess;
-public class CreateAccessCommand: MediatR.IRequest<bool>, ITransactionalRequest//, ISecuredRequest
+public class CreateAccessCommand: MediatR.IRequest<bool>, ITransactionalRequest, ISecuredRequest
 {
-    public Guid UserId { get; set; }
-    public UserState UserState { get; set; }
+    public CreateAccessCommandDto CreateAccessDto { get; set; }
 
-    public string[] Roles => [];
+    public string[] Roles => [GeneralOperationClaims.Admin];
 
     public class CreateAccessCommandHandler: IRequestHandler<CreateAccessCommand, bool>
     {
@@ -39,29 +40,14 @@ public class CreateAccessCommand: MediatR.IRequest<bool>, ITransactionalRequest/
 
         public async Task<bool> Handle(CreateAccessCommand request, CancellationToken cancellationToken)
         {
-            int[] selectedOperationClaims = [];
 
-            User? user = await _userService.GetAsync(u => u.Id == request.UserId);
+            User? user = await _userService.GetAsync(u => u.Id == request.CreateAccessDto.UserId);
             await _userBusinessRules.UserShouldBeExistsWhenSelected(user);
 
             ICollection<UserOperationClaim>? useroc = await _userOperationClaimRepository.Query().AsNoTracking().Where(uoc => uoc.UserId == user!.Id).ToListAsync();
             await _userOperationClaimRepository.DeleteRangeAsync(useroc, true);
 
-            if (request.UserState == UserState.Admin)
-            {
-                selectedOperationClaims = [24, 18, 30, 36, 33, 34, 35, 31, 39, 40, 41, 42, 43, 48, 49, 50, 51, 52, 53, 54, 57];
-                user!.UserState = UserState.Admin;
-            }
-
-
-            if (request.UserState == UserState.CourtOwner)
-            {
-                selectedOperationClaims = [33, 34, 35, 31, 39, 40, 41, 43, 45, 47, 49, 50, 37, 51, 52, 57];
-                user.UserState = UserState.CourtOwner;
-            }
-
-
-            foreach(int item in selectedOperationClaims)
+            foreach(int item in request.CreateAccessDto.ClaimIds)
             {
                 UserOperationClaim claim = new()
                 {
@@ -72,6 +58,8 @@ public class CreateAccessCommand: MediatR.IRequest<bool>, ITransactionalRequest/
 
                 await _userOperationClaimRepository.AddAsync(claim);
             }
+
+            user.UserState = request.CreateAccessDto.UserState;
 
             await _userService.UpdateAsync(user!);
             return true;

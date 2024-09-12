@@ -64,7 +64,10 @@ public class RentReservationCommand: IRequest<RentReservationResponse>, ITransac
 
             CourtReservation? courtReservation = await _courtReservationRepository.GetAsync(cr => cr.Id == request.Id, include: cr => cr.Include(opt => opt.Court!));
             await _courtReservationBusinessRules.CourtReservationShouldExistWhenSelected(courtReservation);
-            
+
+            await _courtReservationBusinessRules.UserMaxOneOnTheSameDay(courtReservation!, user!);
+            await _courtReservationBusinessRules.UserHaveMaxFiveReservationPerWeek(courtReservation!, user!);
+
             await _courtReservationBusinessRules.CourtReservationShouldBeActiveAndNotRented(courtReservation!);
 
             courtReservation!.UserId = user!.Id;
@@ -76,7 +79,7 @@ public class RentReservationCommand: IRequest<RentReservationResponse>, ITransac
             await _mailService.SendEmailAsync(new Mail
             {
                 ToList = mailboxAddresses,
-                Subject = "Randevu İptali",
+                Subject = "Reservasyonunuz Kiralandı!",
                 HtmlBody = $"<p>Merhabalar,<br/> <b>{courtReservation.AvailableDate}</b> tarihli; başlangıç saati <b>{courtReservation.StartTime}</b>, bitiş saati <b>{courtReservation.EndTime}</b> olan rezervasyonunuz <b>{user.FirstName} {user.LastName}</b> tarafından <b>kiralanmışdır</b>.<br/> Kullanıcı ile iletişime geçmek isterseniz <b>Kiralanan Randevular</b> kısımına bakabilirisiniz. <br/> İyi Günler.</p>"
             });
 

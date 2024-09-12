@@ -11,6 +11,7 @@ using Application.Features.Courts.Constants;
 using Application.Features.CourtReservations.Constants;
 using Application.Features.Retentions.Constants;
 using Application.Features.Suspends.Constants;
+using Application.Features.SFFiles.Constants;
 
 namespace Persistence.EntityConfigurations;
 
@@ -50,7 +51,6 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
     private IEnumerable<OperationClaim> getFeatureOperationClaims(int initialId)
     {
         int lastId = initialId;
-        int newLastId = 54;
         List<OperationClaim> featureOperationClaims = new();
 
         #region Auth
@@ -158,17 +158,32 @@ public class OperationClaimConfiguration : IEntityTypeConfiguration<OperationCla
             ]
         );
         #endregion
-        
-        
+
+
+        #region CustomOperationClaims CRUD
+
+        featureOperationClaims.AddRange(
+            [
+                new() { Id = ++lastId, Name = SFFilesOperationClaims.Admin},
+                new() { Id = ++lastId, Name = SFFilesOperationClaims.Create},
+                new() { Id = ++lastId, Name = SFFilesOperationClaims.Delete},
+                new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Rent},
+                new() { Id = ++lastId, Name = CourtReservationsOperationClaims.Cancel},
+                new() { Id = ++lastId, Name = CourtsOperationClaims.CeoItemsRead},
+            ]);
+
+        #endregion
+
+
         #region Suspends CRUD
         featureOperationClaims.AddRange(
             [
-                new() { Id = newLastId, Name = SuspendsOperationClaims.Admin },
-                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Read },
-                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Write },
-                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Create },
-                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Update },
-                new() { Id = ++newLastId, Name = SuspendsOperationClaims.Delete },
+                new() { Id = ++lastId, Name = SuspendsOperationClaims.Admin },
+                new() { Id = ++lastId, Name = SuspendsOperationClaims.Read },
+                new() { Id = ++lastId, Name = SuspendsOperationClaims.Write },
+                new() { Id = ++lastId, Name = SuspendsOperationClaims.Create },
+                new() { Id = ++lastId, Name = SuspendsOperationClaims.Update },
+                new() { Id = ++lastId, Name = SuspendsOperationClaims.Delete },
             ]
         );
         #endregion

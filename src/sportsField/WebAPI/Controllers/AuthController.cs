@@ -68,47 +68,47 @@ public class AuthController : BaseController
         return Ok(result);
     }
 
-    [HttpGet("EnableEmailAuthenticator")]
-    public async Task<IActionResult> EnableEmailAuthenticator()
-    {
-        EnableEmailAuthenticatorCommand enableEmailAuthenticatorCommand =
-            new()
-            {
-                UserId = getUserIdFromRequest(),
-                VerifyEmailUrlPrefix = $"{_configuration.ApiDomain}/Auth/VerifyEmailAuthenticator"
-            };
-        await Mediator.Send(enableEmailAuthenticatorCommand);
+    //[HttpGet("EnableEmailAuthenticator")]
+    //public async Task<IActionResult> EnableEmailAuthenticator()
+    //{
+    //    EnableEmailAuthenticatorCommand enableEmailAuthenticatorCommand =
+    //        new()
+    //        {
+    //            UserId = getUserIdFromRequest(),
+    //            VerifyEmailUrlPrefix = $"{_configuration.ApiDomain}/Auth/VerifyEmailAuthenticator"
+    //        };
+    //    await Mediator.Send(enableEmailAuthenticatorCommand);
 
-        return Ok();
-    }
+    //    return Ok();
+    //}
 
-    [HttpGet("EnableOtpAuthenticator")]
-    public async Task<IActionResult> EnableOtpAuthenticator()
-    {
-        EnableOtpAuthenticatorCommand enableOtpAuthenticatorCommand = new() { UserId = getUserIdFromRequest() };
-        EnabledOtpAuthenticatorResponse result = await Mediator.Send(enableOtpAuthenticatorCommand);
+    //[HttpGet("EnableOtpAuthenticator")]
+    //public async Task<IActionResult> EnableOtpAuthenticator()
+    //{
+    //    EnableOtpAuthenticatorCommand enableOtpAuthenticatorCommand = new() { UserId = getUserIdFromRequest() };
+    //    EnabledOtpAuthenticatorResponse result = await Mediator.Send(enableOtpAuthenticatorCommand);
 
-        return Ok(result);
-    }
+    //    return Ok(result);
+    //}
 
-    [HttpGet("VerifyEmailAuthenticator")]
-    public async Task<IActionResult> VerifyEmailAuthenticator(
-        [FromQuery] VerifyEmailAuthenticatorCommand verifyEmailAuthenticatorCommand
-    )
-    {
-        await Mediator.Send(verifyEmailAuthenticatorCommand);
-        return Ok();
-    }
+    //[HttpGet("VerifyEmailAuthenticator")]
+    //public async Task<IActionResult> VerifyEmailAuthenticator(
+    //    [FromQuery] VerifyEmailAuthenticatorCommand verifyEmailAuthenticatorCommand
+    //)
+    //{
+    //    await Mediator.Send(verifyEmailAuthenticatorCommand);
+    //    return Ok();
+    //}
 
-    [HttpPost("VerifyOtpAuthenticator")]
-    public async Task<IActionResult> VerifyOtpAuthenticator([FromBody] string authenticatorCode)
-    {
-        VerifyOtpAuthenticatorCommand verifyEmailAuthenticatorCommand =
-            new() { UserId = getUserIdFromRequest(), ActivationCode = authenticatorCode };
+    //[HttpPost("VerifyOtpAuthenticator")]
+    //public async Task<IActionResult> VerifyOtpAuthenticator([FromBody] string authenticatorCode)
+    //{
+    //    VerifyOtpAuthenticatorCommand verifyEmailAuthenticatorCommand =
+    //        new() { UserId = getUserIdFromRequest(), ActivationCode = authenticatorCode };
 
-        await Mediator.Send(verifyEmailAuthenticatorCommand);
-        return Ok();
-    }
+    //    await Mediator.Send(verifyEmailAuthenticatorCommand);
+    //    return Ok();
+    //}
 
     private string getRefreshTokenFromCookies()
     {
@@ -117,7 +117,7 @@ public class AuthController : BaseController
 
     private void setRefreshTokenToCookie(RefreshToken refreshToken)
     {
-        CookieOptions cookieOptions = new() { HttpOnly = true, Expires = DateTime.UtcNow.AddDays(7) };
+        CookieOptions cookieOptions = new() { HttpOnly = false, Expires = DateTime.UtcNow.AddDays(7), Secure = true, SameSite = SameSiteMode.None, Domain = ".flepix.com.tr" };
         Response.Cookies.Append(key: "refreshToken", refreshToken.Token, cookieOptions);
     }
 }

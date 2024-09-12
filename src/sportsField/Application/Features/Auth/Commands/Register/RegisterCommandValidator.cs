@@ -15,7 +15,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .MinimumLength(6)
             .Must(StrongPassword)
             .WithMessage(
-                "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character."
+                "Şifre, en az birer adet büyük harf, küçük harf, rakam ve özel karakter içermelidir."
             );
     }
 
